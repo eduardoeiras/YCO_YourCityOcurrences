@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_notas">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.yco_yourcityocurrences.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_notas"
+        android:name="com.example.yco_yourcityocurrences.ui.notas.NotasFragment"
+        android:label="@string/title_notas"
+        tools:layout="@layout/fragment_notas" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.yco_yourcityocurrences.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_login"
+        android:name="com.example.yco_yourcityocurrences.ui.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.yco_yourcityocurrences.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_definicoes"
+        android:name="com.example.yco_yourcityocurrences.ui.definicoes.DefinicoesFragment"
+        android:label="@string/title_defenicoes"
+        tools:layout="@layout/fragment_definicoes" />
+    <fragment
+        android:id="@+id/navigation_mapa"
+        android:name="com.example.yco_yourcityocurrences.ui.mapa.MapaFragment"
+        android:label="@string/title_mapa"
+        tools:layout="@layout/fragment_mapa" />
 </navigation>

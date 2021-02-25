@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_mapa">Occurrences Map</string>
+    <string name="title_login">Log In</string>
+    <string name="title_notas">Notes</string>
+    <string name="title_defenicoes">Settings</string>
+    <string name="iniSessao">Log In</string>
+    <string name="hint_iniciarSessao">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="botao_iniciar_sessao">Log In</string>
+</resources>

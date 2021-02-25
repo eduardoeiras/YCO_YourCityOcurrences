@@ -1,10 +1,13 @@
 <resources>
-    <string name="app_name">YCO - YourCityOcurrences</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_bottom_navigation">MainActivity</string>
+    <string name="app_name" translatable="false">YCO - YourCityOcurrences</string>
+    <string name="title_activity_main" translatable="false">YCO - YourCityOcurrences</string>
     <string name="title_mapa">Mapa de Ocorrências</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
+    <string name="title_login">Iniciar Sessão</string>
+    <string name="title_defenicoes">Definições</string>
+    <string name="title_notas">Notas</string>
+    <string name="iniSessao">Iniciar Sessão</string>
+    <string name="hint_iniciarSessao">Nome de utilizador</string>
+    <string name="hint_password">Password</string>
+    <string name="botao_iniciar_sessao">Iniciar Sessão</string>
+    <string name="cd_logo" translatable="false">YCO - Your City Ocurrences</string>
 </resources>

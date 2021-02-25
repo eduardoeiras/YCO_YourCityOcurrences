@@ -1,4 +1,4 @@
-package com.example.yco_yourcityocurrences.ui.home
+package com.example.yco_yourcityocurrences.ui.definicoes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.yco_yourcityocurrences.R
 
-class HomeFragment : Fragment() {
+class DefinicoesFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var definicoesViewModel: DefinicoesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        definicoesViewModel =
+            ViewModelProvider(this).get(DefinicoesViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_definicoes, container, false)
+        val textView: TextView = root.findViewById(R.id.text_notifications)
+        definicoesViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
