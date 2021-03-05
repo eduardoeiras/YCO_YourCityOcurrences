@@ -13,4 +13,5 @@
     <string name="search_map">Search for an occurrence</string>
     <string name="layout_notes_title">My Notes</string>
     <string name="botao_registar">Sign In</string>
+    <string name="criarNota">Add a new note</string>
 </resources>

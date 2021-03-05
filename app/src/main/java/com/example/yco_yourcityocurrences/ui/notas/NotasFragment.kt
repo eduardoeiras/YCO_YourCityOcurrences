@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.adaptors.NotaAdaptor
 import com.example.yco_yourcityocurrences.dataclasses.Nota
+import com.google.android.material.snackbar.Snackbar
 
 class NotasFragment : Fragment() {
 
@@ -36,6 +37,13 @@ class NotasFragment : Fragment() {
 
         recyclerView.adapter = NotaAdaptor(listaNotas)
         recyclerView.layoutManager = LinearLayoutManager(root.context)
+
+        val fab: View = root.findViewById(R.id.adicionarNota)
+        fab.setOnClickListener { view ->
+            Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show()
+        }
 
         return root
     }
