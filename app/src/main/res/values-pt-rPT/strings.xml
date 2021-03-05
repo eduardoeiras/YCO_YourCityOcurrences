@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_mapa">Mapa de Ocorrências</string>
+    <string name="title_login">Iniciar Sessão</string>
+    <string name="title_defenicoes">Definições</string>
+    <string name="title_notas">Notas</string>
+    <string name="iniSessao">Iniciar Sessão</string>
+    <string name="hint_iniciarSessao">Nome de utilizador</string>
+    <string name="hint_password">Palavra-passe</string>
+    <string name="botao_iniciar_sessao">Iniciar Sessão</string>
+    <string name="search_map">Procurar por uma ocorrência</string>
+    <string name="layout_notes_title">As minhas notas</string>
+    <string name="botao_registar">Registar</string>
+</resources>
