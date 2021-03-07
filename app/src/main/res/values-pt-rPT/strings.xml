@@ -17,4 +17,6 @@
     <string name="hint_conteudo_nota">Conteúdo/Descrição da nota</string>
     <string name="botao_save_nota">Guardar</string>
     <string name="new_note_activity_title">Nova Nota</string>
+    <string name="botao_remove_nota">Remover Nota</string>
+    <string name="voltar_ve_nota">Voltar para trás e guardar mudanças</string>
 </resources>

@@ -19,4 +19,6 @@
     <string name="hint_conteudo_nota">Note Content/Description</string>
     <string name="botao_save_nota">Save</string>
     <string name="new_note_activity_title">New Note</string>
+    <string name="botao_remove_nota">Delete Note</string>
+    <string name="voltar_ve_nota">Go back and save changes</string>
 </resources>

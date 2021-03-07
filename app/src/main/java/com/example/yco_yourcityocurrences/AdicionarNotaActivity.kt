@@ -12,7 +12,7 @@ class AdicionarNotaActivity : AppCompatActivity() {
         this.title = R.string.new_note_activity_title.toString()
     }
 
-    fun cancelarNota(view: View) {
+    fun cancelarNota(@Suppress("UNUSED_PARAMETER") view: View) {
         finish()
     }
 }
