@@ -12,4 +12,9 @@
     <string name="layout_notes_title">As minhas notas</string>
     <string name="botao_registar">Registar</string>
     <string name="criarNota">Adicionar uma nova nota</string>
+    <string name="nova_nota_back_button_desc">Cancelar a criação da nota e voltar para trás</string>
+    <string name="edit_titulo_nota">Título</string>
+    <string name="hint_conteudo_nota">Conteúdo/Descrição da nota</string>
+    <string name="botao_save_nota">Guardar</string>
+    <string name="new_note_activity_title">Nova Nota</string>
 </resources>

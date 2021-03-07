@@ -8,15 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.dataclasses.Nota
 
-class NotaAdaptor(val list: ArrayList<Nota>) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
+class NotaAdaptor(val list: ArrayList<Nota>, var clickListener : OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
 
     class NotaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titulo: TextView = itemView.findViewById(R.id.titulo_nota)
         val conteudo: TextView = itemView.findViewById(R.id.conteudo_nota)
 
-        fun inicializar(item : Nota) {
+        fun inicializar(item : Nota, action : OnNotaClickListener) {
             titulo.text = item.titulo
             conteudo.text = item.conteudo
+
+            itemView.setOnClickListener {
+                action.onItemClick(item, adapterPosition)
+            }
         }
     }
 
@@ -33,7 +37,11 @@ class NotaAdaptor(val list: ArrayList<Nota>) : RecyclerView.Adapter<NotaAdaptor.
     override fun onBindViewHolder(holder: NotaViewHolder, position: Int) {
         val currentPlace = list[position]
 
-        holder.inicializar(currentPlace)
+        holder.inicializar(currentPlace, clickListener)
 
+    }
+
+    interface OnNotaClickListener {
+        fun onItemClick(item : Nota, position: Int)
     }
 }

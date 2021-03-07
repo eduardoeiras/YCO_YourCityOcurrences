@@ -14,4 +14,9 @@
     <string name="layout_notes_title">My Notes</string>
     <string name="botao_registar">Sign In</string>
     <string name="criarNota">Add a new note</string>
+    <string name="nova_nota_back_button_desc">Cancel note creation and go back</string>
+    <string name="edit_titulo_nota">Title</string>
+    <string name="hint_conteudo_nota">Note Content/Description</string>
+    <string name="botao_save_nota">Save</string>
+    <string name="new_note_activity_title">New Note</string>
 </resources>
