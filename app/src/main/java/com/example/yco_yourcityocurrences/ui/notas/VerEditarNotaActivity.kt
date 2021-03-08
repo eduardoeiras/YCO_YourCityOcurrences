@@ -1,15 +1,17 @@
-package com.example.yco_yourcityocurrences
+package com.example.yco_yourcityocurrences.ui.notas
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.dataclasses.Nota
 
 class VerEditarNotaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_ver_editar_nota)
         val nota = intent.getSerializableExtra("nota") as? Nota
 

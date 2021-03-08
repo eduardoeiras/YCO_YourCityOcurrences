@@ -12,20 +12,13 @@ import com.example.yco_yourcityocurrences.R
 
 class DefinicoesFragment : Fragment() {
 
-    private lateinit var definicoesViewModel: DefinicoesViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        definicoesViewModel =
-            ViewModelProvider(this).get(DefinicoesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_definicoes, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        definicoesViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
         return root
     }
 }

@@ -15,10 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YCOYourCityOcurrences">
-        <activity android:name=".VerEditarNotaActivity">
+        <activity android:name=".ui.notas.VerEditarNotaActivity">
 
         </activity>
-        <activity android:name=".AdicionarNotaActivity" />
+        <activity android:name=".ui.notas.AdicionarNotaActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

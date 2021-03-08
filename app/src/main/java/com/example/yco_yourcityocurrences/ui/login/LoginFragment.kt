@@ -12,16 +12,13 @@ import com.example.yco_yourcityocurrences.R
 
 class LoginFragment : Fragment() {
 
-    private lateinit var loginViewModel: LoginViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        loginViewModel =
-            ViewModelProvider(this).get(LoginViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_login, container, false)
+
         return root
     }
 }

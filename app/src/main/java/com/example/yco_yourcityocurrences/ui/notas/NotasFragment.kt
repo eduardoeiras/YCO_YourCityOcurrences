@@ -10,9 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yco_yourcityocurrences.AdicionarNotaActivity
 import com.example.yco_yourcityocurrences.R
-import com.example.yco_yourcityocurrences.VerEditarNotaActivity
 import com.example.yco_yourcityocurrences.adaptors.NotaAdaptor
 import com.example.yco_yourcityocurrences.dataclasses.Nota
 import java.time.LocalDateTime
