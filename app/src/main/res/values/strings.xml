@@ -22,4 +22,14 @@
     <string name="botao_remove_nota">Delete Note</string>
     <string name="voltar_ve_nota">Go back and save changes</string>
     <string name="title_ve_nota">View and Edit Note</string>
+    <string name="registo_activity_title">Sign In</string>
+    <string name="reisto_acc_info">Account Information</string>
+    <string name="hint_rep_password">Repeate Password</string>
+    <string name="registo_personal_info">Personal Information</string>
+    <string name="hint_reg_nomeC">Full Name</string>
+    <string name="hint_reg_numTel">Mobile Phone Number</string>
+    <string name="hint_reg_numTelf">Telephone Number</string>
+    <string name="hint_email">Email</string>
+    <string name="cancel_reg">Cancel</string>
+    <string name="confirmar_reg">Sign In</string>
 </resources>

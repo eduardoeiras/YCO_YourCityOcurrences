@@ -20,4 +20,14 @@
     <string name="botao_remove_nota">Remover Nota</string>
     <string name="voltar_ve_nota">Voltar para trás e guardar mudanças</string>
     <string name="title_ve_nota">Visualizar e Editar Nota</string>
+    <string name="registo_activity_title">Efetuar Registo</string>
+    <string name="reisto_acc_info">Informação da Conta</string>
+    <string name="hint_rep_password">Repita a Password</string>
+    <string name="registo_personal_info">Informação Pessoal</string>
+    <string name="hint_reg_nomeC">Nome Completo</string>
+    <string name="hint_reg_numTel">Número de Telemóvel</string>
+    <string name="hint_reg_numTelf">Número de Telefone</string>
+    <string name="hint_email">Email</string>
+    <string name="cancel_reg">Cancelar</string>
+    <string name="confirmar_reg">Efetuar Registo</string>
 </resources>
