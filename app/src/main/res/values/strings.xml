@@ -32,4 +32,11 @@
     <string name="hint_email">Email</string>
     <string name="cancel_reg">Cancel</string>
     <string name="confirmar_reg">Sign In</string>
+    <string name="loc_details_title">Location Details</string>
+    <string name="ocurrence_distrito_title">District/State:</string>
+    <string name="ocorrencia_rua_title">Street:</string>
+    <string name="ocurrence_coords_title">Coordinates:</string>
+    <string name="user_details_title">Comunication Details:</string>
+    <string name="ocurrence_username_title">Username:</string>
+    <string name="ocurrence_data_title">Date:</string>
 </resources>

@@ -30,4 +30,11 @@
     <string name="cancel_reg">Cancelar</string>
     <string name="confirmar_reg">Efetuar Registo</string>
     <string name="title_ajuda">Ajuda</string>
+    <string name="loc_details_title">Detalhes da Localização</string>
+    <string name="ocurrence_distrito_title">Distrito:</string>
+    <string name="ocorrencia_rua_title">Rua:</string>
+    <string name="ocurrence_coords_title">Coordenadas:</string>
+    <string name="user_details_title">Detalhes da Comunicação:</string>
+    <string name="ocurrence_username_title">Nome de Utilizador:</string>
+    <string name="ocurrence_data_title">Data:</string>
 </resources>

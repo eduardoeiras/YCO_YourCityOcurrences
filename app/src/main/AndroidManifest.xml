@@ -15,9 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YCOYourCityOcurrences">
-        <activity android:name=".ui.registo.RegistoActivity">
-
-        </activity>
+        <activity android:name=".ui.ocorrencia.VerificarOcorrencia" />
+        <activity android:name=".ui.registo.RegistoActivity" />
         <activity
             android:name=".SpashScreen"
             android:noHistory="true"
@@ -28,9 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.notas.VerEditarNotaActivity">
-
-        </activity>
+        <activity android:name=".ui.notas.VerEditarNotaActivity" />
         <activity android:name=".ui.notas.AdicionarNotaActivity" />
 
         <meta-data
@@ -42,9 +39,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main">
-
-        </activity>
+            android:label="@string/title_activity_main" />
     </application>
 
 </manifest>
