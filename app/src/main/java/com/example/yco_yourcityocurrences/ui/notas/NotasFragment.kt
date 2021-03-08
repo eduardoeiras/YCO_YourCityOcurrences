@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.adaptors.NotaAdaptor
-import com.example.yco_yourcityocurrences.dataclasses.Nota
+import com.example.yco_yourcityocurrences.entities.Nota
+import java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
 
@@ -34,12 +38,10 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
         listaNotas = ArrayList<Nota>()
 
         //SUBSTITUIR COM A LISTA OBTIDA DA BASE DE DADOS LOCAL E ENVIAR PARA O ADAPTOR
-        val current = LocalDateTime.now()
+        val data =  Date()
 
-        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-        val formatted = current.format(formatter)
         for (i in 0 until 500) {
-            listaNotas.add(Nota(i, "Nota $i", "conteudo da nota $i com coisas e coisas que nunca mais acaba......", formatted))
+            listaNotas.add(Nota(i, "Nota $i", "conteudo da nota $i com coisas e coisas que nunca mais acaba......", data))
         }
 
         recyclerView = root.findViewById(R.id.recyclerview_notas)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
-import com.example.yco_yourcityocurrences.dataclasses.Nota
+import com.example.yco_yourcityocurrences.entities.Nota
 
 class NotaAdaptor(val list: ArrayList<Nota>, var clickListener : OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
 

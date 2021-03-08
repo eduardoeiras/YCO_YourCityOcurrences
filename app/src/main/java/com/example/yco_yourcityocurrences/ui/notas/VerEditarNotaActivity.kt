@@ -3,10 +3,12 @@ package com.example.yco_yourcityocurrences.ui.notas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import com.example.yco_yourcityocurrences.R
-import com.example.yco_yourcityocurrences.dataclasses.Nota
+import com.example.yco_yourcityocurrences.entities.Nota
 
 class VerEditarNotaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +24,16 @@ class VerEditarNotaActivity : AppCompatActivity() {
         if (nota != null) {
             titulo.setText(nota.titulo)
             descricao.setText(nota.conteudo)
-            data.setText(nota.data)
+            data.setText(nota.data.toString())
         }
     }
 
     //VOLTAR À LISTAGEM DAS NOTAS, VERIFICANDO POR ALTERAÇÕES, CASO EXISTAM, APLICAM-SE E VOLTA-SE
     // AO ECRÃ ANTERIOR
-    fun voltar(@Suppress("UNUSED_PARAMETER") view: View) {
-        finish()
+    fun voltar(view: View) {
+        if(view is ImageButton) {
+            finish()
+        }
     }
 
     fun verificarAlteracoes() {
