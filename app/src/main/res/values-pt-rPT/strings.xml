@@ -2,7 +2,6 @@
 <resources>
     <string name="title_mapa">Mapa de Ocorrências</string>
     <string name="title_login">Iniciar Sessão</string>
-    <string name="title_defenicoes">Definições</string>
     <string name="title_notas">Notas</string>
     <string name="iniSessao">Iniciar Sessão</string>
     <string name="hint_iniciarSessao">Nome de utilizador</string>
@@ -30,4 +29,5 @@
     <string name="hint_email">Email</string>
     <string name="cancel_reg">Cancelar</string>
     <string name="confirmar_reg">Efetuar Registo</string>
+    <string name="title_ajuda">Ajuda</string>
 </resources>

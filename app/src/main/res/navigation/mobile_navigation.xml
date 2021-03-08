@@ -18,10 +18,10 @@
         tools:layout="@layout/fragment_login" />
 
     <fragment
-        android:id="@+id/navigation_definicoes"
-        android:name="com.example.yco_yourcityocurrences.ui.definicoes.DefinicoesFragment"
-        android:label="@string/title_defenicoes"
-        tools:layout="@layout/fragment_definicoes" />
+        android:id="@+id/navigation_ajuda"
+        android:name="com.example.yco_yourcityocurrences.ui.ajuda.AjudaFragment"
+        android:label="@string/title_ajuda"
+        tools:layout="@layout/fragment_ajuda" />
     <fragment
         android:id="@+id/navigation_mapa"
         android:name="com.example.yco_yourcityocurrences.ui.mapa.MapaFragment"

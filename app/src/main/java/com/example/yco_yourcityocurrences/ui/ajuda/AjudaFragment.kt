@@ -1,23 +1,20 @@
-package com.example.yco_yourcityocurrences.ui.definicoes
+package com.example.yco_yourcityocurrences.ui.ajuda
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.yco_yourcityocurrences.R
 
-class DefinicoesFragment : Fragment() {
+class AjudaFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_definicoes, container, false)
+        val root = inflater.inflate(R.layout.fragment_ajuda, container, false)
 
         return root
     }

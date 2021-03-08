@@ -17,8 +17,8 @@
         android:title="@string/title_login" />
 
     <item
-        android:id="@+id/navigation_definicoes"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="@string/title_defenicoes" />
+        android:id="@+id/navigation_ajuda"
+        android:icon="@drawable/ic_baseline_help_24"
+        android:title="@string/title_ajuda" />
 
 </menu>
