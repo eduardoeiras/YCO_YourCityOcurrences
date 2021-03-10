@@ -37,4 +37,6 @@
     <string name="user_details_title">Detalhes da Comunicação:</string>
     <string name="ocurrence_username_title">Nome de Utilizador:</string>
     <string name="ocurrence_data_title">Data:</string>
+    <string name="nota_add_titulo_erro">É obrigatório introduzir um título para a nota!</string>
+    <string name="nota_add_conteudo_erro">É obrigatório introduzir o conteúdo da nota!</string>
 </resources>

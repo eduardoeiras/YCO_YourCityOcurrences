@@ -1,5 +1,6 @@
 package com.example.yco_yourcityocurrences.adaptors
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +9,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.entities.Nota
 
-class NotaAdaptor(val list: ArrayList<Nota>, var clickListener : OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
+class NotaAdaptor internal constructor(context: Context, var clickListener : OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
+
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var notas = emptyList<Nota>()
 
     class NotaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titulo: TextView = itemView.findViewById(R.id.titulo_nota)
-        val conteudo: TextView = itemView.findViewById(R.id.conteudo_nota)
+        private val titulo: TextView = itemView.findViewById(R.id.titulo_nota)
+        private val conteudo: TextView = itemView.findViewById(R.id.conteudo_nota)
 
         fun inicializar(item : Nota, action : OnNotaClickListener) {
             titulo.text = item.titulo
-            conteudo.text = item.conteudo
+            var resumoTexto = ""
+            if(item.conteudo.length <= 100) {
+                resumoTexto = item.conteudo
+            }
+            else {
+                val resumoString = item.conteudo.take(100)
+                resumoTexto = "$resumoString ..."
+            }
+            conteudo.text = resumoTexto
 
             itemView.setOnClickListener {
                 action.onItemClick(item, adapterPosition)
@@ -31,14 +43,18 @@ class NotaAdaptor(val list: ArrayList<Nota>, var clickListener : OnNotaClickList
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return notas.size
     }
 
     override fun onBindViewHolder(holder: NotaViewHolder, position: Int) {
-        val currentPlace = list[position]
+        val current = notas[position]
 
-        holder.inicializar(currentPlace, clickListener)
+        holder.inicializar(current, clickListener)
+    }
 
+    internal fun setNotas(notas: List<Nota>) {
+        this.notas = notas
+        notifyDataSetChanged()
     }
 
     interface OnNotaClickListener {

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.notas.AdicionarNotaActivity">
 
+    <TextView
+        android:id="@+id/add_nota_conteudo_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/design_default_color_error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conteudo_nota" />
+
     <EditText
         android:id="@+id/edit_titulo_nota"
         android:layout_width="match_parent"
@@ -35,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:autofillHints=""
@@ -47,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_titulo_nota" />
+        app:layout_constraintTop_toBottomOf="@+id/add_nota_title_error" />
 
     <Button
         android:id="@+id/guradar_nota"
@@ -58,6 +69,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="16dp"
+        android:onClick="adicionarNota"
         android:text="@string/botao_save_nota"
         app:backgroundTint="@color/save_button"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +87,18 @@
         android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_baseline_arrow_back_24" />
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:contentDescription="@string/voltar_ve_nota" />
+
+    <TextView
+        android:id="@+id/add_nota_title_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/design_default_color_error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_titulo_nota" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

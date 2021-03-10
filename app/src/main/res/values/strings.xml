@@ -39,4 +39,6 @@
     <string name="user_details_title">Comunication Details:</string>
     <string name="ocurrence_username_title">Username:</string>
     <string name="ocurrence_data_title">Date:</string>
+    <string name="nota_add_titulo_erro">The note\'s title is required!</string>
+    <string name="nota_add_conteudo_erro">"The note's content is required! "</string>
 </resources>
