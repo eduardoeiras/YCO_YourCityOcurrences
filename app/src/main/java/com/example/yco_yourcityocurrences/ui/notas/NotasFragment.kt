@@ -31,6 +31,7 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var notaViewModel: NotaViewModel
     private val novaNotaActivityReqCode = 1
+    private val verificarEditarNotaReqCode = 2
     val ITEM_NOTA = "nota"
 
     //@RequiresApi(Build.VERSION_CODES.O)
@@ -59,7 +60,7 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
         val fab: View = root.findViewById(R.id.adicionarNota)
 
         fab.setOnClickListener { _ ->
-            val intent = Intent(root.context, AdicionarNotaActivity::class.java)
+            val intent = Intent(this.context, AdicionarNotaActivity::class.java)
             startActivityForResult(intent, novaNotaActivityReqCode)
         }
 
@@ -69,7 +70,7 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
     override fun onItemClick(item: Nota, position: Int) {
         val intent = Intent(this.context, VerEditarNotaActivity::class.java)
         intent.putExtra(ITEM_NOTA, item)
-        startActivity(intent)
+        startActivityForResult(intent, verificarEditarNotaReqCode)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -78,12 +79,23 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
 
         if(requestCode == novaNotaActivityReqCode && resultCode == Activity.RESULT_OK) {
             val titulo = data?.getStringExtra(AdicionarNotaActivity.REPLY_TITLE).toString()
-            val conteudo = data?.getStringExtra(AdicionarNotaActivity.REPLY_TITLE).toString()
+            val conteudo = data?.getStringExtra(AdicionarNotaActivity.REPLY_CONTENT).toString()
             val dataAtual = LocalDateTime.now()
             val dataFormatada = dataAtual.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
 
             val nota = Nota(titulo = titulo, conteudo = conteudo, data = dataFormatada)
             notaViewModel.insertNota(nota)
+        }
+
+        if(requestCode == verificarEditarNotaReqCode && resultCode == Activity.RESULT_OK) {
+            val titulo = data?.getStringExtra(VerEditarNotaActivity.REPLY_TITLE).toString()
+            val conteudo = data?.getStringExtra(VerEditarNotaActivity.REPLY_CONTENT).toString()
+            val dataNota = data?.getStringExtra(VerEditarNotaActivity.REPLY_DATA).toString()
+            val id = data?.getStringExtra(VerEditarNotaActivity.REPLY_ID).toString().toInt()
+
+
+            val nota = Nota(id = id, titulo = titulo, conteudo = conteudo, data = dataNota)
+            notaViewModel.updateNota(nota)
         }
     }
 }
