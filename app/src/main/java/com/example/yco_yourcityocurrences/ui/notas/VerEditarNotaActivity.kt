@@ -75,5 +75,15 @@ class VerEditarNotaActivity : AppCompatActivity() {
         const val REPLY_CONTENT = "content"
         const val REPLY_DATA = "data"
         const val REPLY_ID = "id"
+        const val RESULT_REMOVE = 1
+    }
+
+    fun removerNota(view: View) {
+        if(view is Button) {
+            val replyIntent = Intent()
+            replyIntent.putExtra(REPLY_ID, nota.id.toString())
+            setResult(RESULT_REMOVE, replyIntent)
+            finish()
+        }
     }
 }

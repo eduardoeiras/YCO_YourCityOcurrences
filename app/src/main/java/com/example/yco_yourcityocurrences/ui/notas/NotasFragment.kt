@@ -97,5 +97,11 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
             val nota = Nota(id = id, titulo = titulo, conteudo = conteudo, data = dataNota)
             notaViewModel.updateNota(nota)
         }
+
+        if(requestCode == verificarEditarNotaReqCode && resultCode == VerEditarNotaActivity.RESULT_REMOVE) {
+            val id = data?.getStringExtra(VerEditarNotaActivity.REPLY_ID).toString().toInt()
+
+            notaViewModel.deleteNota(id = id)
+        }
     }
 }

@@ -94,6 +94,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
+        android:onClick="removerNota"
         android:text="@string/botao_remove_nota"
         app:backgroundTint="@color/delete_button"
         app:layout_constraintBottom_toBottomOf="parent"
