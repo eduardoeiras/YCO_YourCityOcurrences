@@ -41,4 +41,8 @@
     <string name="ocurrence_data_title">Date:</string>
     <string name="nota_add_titulo_erro">The note\'s title is required!</string>
     <string name="nota_add_conteudo_erro">"The note's content is required! "</string>
+    <string name="login_form_error">Username and Password are required!</string>
+    <string name="user_creds_file_key" translatable="false">userCreds</string>
+    <string name="username" translatable="false">username</string>
+    <string name="password" translatable="false">password</string>
 </resources>

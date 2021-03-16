@@ -50,9 +50,15 @@ class AdicionarNotaActivity : AppCompatActivity() {
             erro = true
             findViewById<TextView>(R.id.add_nota_title_error).setText(resources.getString(R.string.nota_add_titulo_erro))
         }
+        else {
+            findViewById<TextView>(R.id.add_nota_title_error).setText("")
+        }
         if (editConteudo.text.isEmpty()) {
             erro = true
             findViewById<TextView>(R.id.add_nota_conteudo_error).setText(resources.getString(R.string.nota_add_conteudo_erro))
+        }
+        else {
+            findViewById<TextView>(R.id.add_nota_conteudo_error).setText("")
         }
         return erro
     }

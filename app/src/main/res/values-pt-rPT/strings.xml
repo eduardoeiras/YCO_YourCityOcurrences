@@ -39,4 +39,5 @@
     <string name="ocurrence_data_title">Data:</string>
     <string name="nota_add_titulo_erro">É obrigatório introduzir um título para a nota!</string>
     <string name="nota_add_conteudo_erro">É obrigatório introduzir o conteúdo da nota!</string>
+    <string name="login_form_error">O nome de utilizador e a palavra-pass são obrigatórios!</string>
 </resources>

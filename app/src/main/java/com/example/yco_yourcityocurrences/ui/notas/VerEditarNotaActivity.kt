@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.entities.Nota
 
@@ -20,6 +17,8 @@ class VerEditarNotaActivity : AppCompatActivity() {
     private lateinit var titulo: EditText
     private lateinit var conteudo: EditText
     private lateinit var data: TextView
+
+    private var guardar: Boolean = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +39,7 @@ class VerEditarNotaActivity : AppCompatActivity() {
     fun voltar(view: View) {
         if(view is ImageButton) {
             val replyIntent = Intent()
-            if(verificarAlteracoes()) {
+            if(verificarAlteracoes() && guardar) {
                 replyIntent.putExtra(REPLY_TITLE, titulo.text.toString())
                 replyIntent.putExtra(REPLY_CONTENT, conteudo.text.toString())
                 replyIntent.putExtra(REPLY_DATA, nota.data)
@@ -61,10 +60,22 @@ class VerEditarNotaActivity : AppCompatActivity() {
         var alterado = false
 
         if(!titulo.text.equals(nota.titulo)) {
-            alterado = true
+            if(titulo.text.toString().isNotEmpty()) {
+                alterado = true
+            }
+            else {
+                Toast.makeText(this, resources.getString(R.string.nota_add_titulo_erro), Toast.LENGTH_SHORT).show()
+                guardar = false
+            }
         }
         if(!conteudo.text.equals(nota.conteudo)) {
-            alterado = true
+            if(conteudo.text.toString().isNotEmpty()) {
+                alterado = true
+            }
+            else {
+                Toast.makeText(this, resources.getString(R.string.nota_add_conteudo_erro), Toast.LENGTH_SHORT).show()
+                guardar = false
+            }
         }
 
         return alterado
