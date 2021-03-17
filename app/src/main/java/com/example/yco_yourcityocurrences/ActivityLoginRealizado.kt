@@ -52,7 +52,7 @@ class ActivityLoginRealizado : AppCompatActivity(){
 
         dialogView.findViewById<Button>(R.id.warning_botao_sim).setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             mAlertDialog.dismiss()
             this.finish()

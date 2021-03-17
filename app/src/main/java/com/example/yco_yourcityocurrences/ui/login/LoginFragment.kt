@@ -78,7 +78,7 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             val intent = Intent(this@LoginFragment.context, ActivityLoginRealizado::class.java)
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
                             this@LoginFragment.activity?.finish()
                         } else {

@@ -11,7 +11,7 @@ object ServiceBuilder {
 
     //Logger dos requests
     //TODO("REMOVER PARA VERSÃO FINAL")
-    val logging : HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    val logging : HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     val certificatePinner = CertificatePinner.Builder()
             //ACIÇÃO DAS CHAVES DE ENCRIPTAÇÃO PARA O WEBSITE QUE CONTÉM A CAMADA DE SERVIÇOS REST DESENVOLVIDA

@@ -58,9 +58,13 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
 
     //Navigation
+    //noinspection GradleDependency
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
+    //noinspection GradleDependency
     implementation 'androidx.navigation:navigation-ui:2.3.3'
+    //noinspection GradleDependency
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
+    //noinspection GradleDependency
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
 
     //Lifecycle
@@ -68,10 +72,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
 
     //Retrofit
+    //noinspection GradleDependency
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.retrofit2:converter-gson:2.4.0"
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
     //Tests
     testImplementation "junit:junit:$rootProject.junitVersion"
