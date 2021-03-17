@@ -4,18 +4,23 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.yco_yourcityocurrences.ActivityLoginRealizado
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.Resposta
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
+import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
 import com.example.yco_yourcityocurrences.ui.registo.RegistoActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,7 +69,6 @@ class LoginFragment : Fragment() {
             val request = ServiceBuilder.buildService(EndPoints::class.java)
             val call = request.realizarLogin(nomeUser = nomeUser, pwd = pwd)
             call.enqueue(object : Callback<Resposta> {
-                @SuppressLint("UseCompatLoadingForDrawables", "RestrictedApi")
                 override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
                     if (response.isSuccessful) {
                         if (response.body()?.status == true) {
@@ -73,7 +77,10 @@ class LoginFragment : Fragment() {
                                 "Login realizado com sucesso!",
                                 Toast.LENGTH_SHORT
                             ).show()
-
+                            val intent = Intent(this@LoginFragment.context, ActivityLoginRealizado::class.java)
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent)
+                            this@LoginFragment.activity?.finish()
                         } else {
                             Toast.makeText(
                                 this@LoginFragment.context,

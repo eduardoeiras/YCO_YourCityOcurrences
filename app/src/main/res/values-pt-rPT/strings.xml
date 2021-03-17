@@ -40,4 +40,9 @@
     <string name="nota_add_titulo_erro">É obrigatório introduzir um título para a nota!</string>
     <string name="nota_add_conteudo_erro">É obrigatório introduzir o conteúdo da nota!</string>
     <string name="login_form_error">O nome de utilizador e a palavra-pass são obrigatórios!</string>
+    <string name="title_log_out">Terminar Sessão</string>
+    <string name="warning">Aviso</string>
+    <string name="warning_logout">Tem a certeza que pretende terminar sessão?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

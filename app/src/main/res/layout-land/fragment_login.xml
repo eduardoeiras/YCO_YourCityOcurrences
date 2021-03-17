@@ -96,7 +96,7 @@
                 tools:ignore="ButtonStyle" />
 
             <Button
-                android:id="@+id/botao_registar"
+                android:id="@+id/botao_registo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

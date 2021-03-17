@@ -45,4 +45,10 @@
     <string name="user_creds_file_key" translatable="false">userCreds</string>
     <string name="username" translatable="false">username</string>
     <string name="password" translatable="false">password</string>
+    <string name="title_activity_login_realizado" translatable="false">YCO - Your City Ocurrences</string>
+    <string name="title_log_out">Log Out</string>
+    <string name="warning">Warning</string>
+    <string name="warning_logout">Are you sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
