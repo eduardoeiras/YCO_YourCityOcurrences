@@ -1,6 +1,7 @@
 package com.example.yco_yourcityocurrences
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -54,6 +55,11 @@ class ActivityLoginRealizado : AppCompatActivity(){
             val intent = Intent(this, MainActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+            val sharedPreferences = this.getSharedPreferences(getString(R.string.user_creds_file_key), Context.MODE_PRIVATE)
+            with(sharedPreferences.edit()) {
+                clear()
+                commit()
+            }
             mAlertDialog.dismiss()
             this.finish()
         }

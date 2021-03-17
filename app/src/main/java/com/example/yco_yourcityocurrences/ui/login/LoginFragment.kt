@@ -1,26 +1,21 @@
 package com.example.yco_yourcityocurrences.ui.login
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.yco_yourcityocurrences.ActivityLoginRealizado
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
-import com.example.yco_yourcityocurrences.api.classes.Resposta
+import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
-import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
 import com.example.yco_yourcityocurrences.ui.registo.RegistoActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,13 +47,6 @@ class LoginFragment : Fragment() {
         editPwd = root.findViewById(R.id.editTextTextPassword)
         sharedPreferences = root.context.getSharedPreferences(getString(R.string.user_creds_file_key), Context.MODE_PRIVATE)
 
-        val nomeUser = sharedPreferences.getString(getString(R.string.username), "")
-        val pwd = sharedPreferences.getString(getString(R.string.password), "")
-
-        if(nomeUser.toString().isNotEmpty() && pwd.toString().isNotEmpty()) {
-            TODO("Iniciar a atividade com login iniciado")
-        }
-
         return root
     }
 
@@ -77,6 +65,11 @@ class LoginFragment : Fragment() {
                                 "Login realizado com sucesso!",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            with(sharedPreferences.edit()) {
+                                putString(getString(R.string.username), nomeUser)
+                                putString(getString(R.string.password), pwd)
+                                commit()
+                            }
                             val intent = Intent(this@LoginFragment.context, ActivityLoginRealizado::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
