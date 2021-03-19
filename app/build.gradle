@@ -40,6 +40,7 @@ android {
 dependencies {
     //Room
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 

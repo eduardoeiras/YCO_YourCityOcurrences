@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,13 +16,8 @@ import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.adaptors.NotaAdaptor
 import com.example.yco_yourcityocurrences.entities.Nota
 import com.example.yco_yourcityocurrences.view_model.NotaViewModel
-import java.text.DateFormat.getDateInstance
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
-import kotlin.collections.ArrayList
 
 class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
 
@@ -42,11 +35,9 @@ class NotasFragment : Fragment(), NotaAdaptor.OnNotaClickListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_notas, container, false)
 
-        //val data =  Date()
-
         //Recycler View
         recyclerView = root.findViewById(R.id.recyclerview_notas)
-        val adaptor = NotaAdaptor(root.context, this)
+        val adaptor = NotaAdaptor(this)
         recyclerView.adapter = adaptor
         recyclerView.layoutManager = LinearLayoutManager(root.context)
 

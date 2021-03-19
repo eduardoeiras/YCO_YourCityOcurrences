@@ -45,4 +45,7 @@
     <string name="warning_logout">Tem a certeza que pretende terminar sessão?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="reset_map_camera_button">Focar câmera na localização atual</string>
+    <string name="layout_mapa_title">Mapa de Ocorrências</string>
+    <string name="botao_pesquisar">Botão de pesquisa de uma ocorrência</string>
 </resources>

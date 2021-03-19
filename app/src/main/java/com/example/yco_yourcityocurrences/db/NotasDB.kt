@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(entities = arrayOf(Nota::class), version = 1, exportSchema = false)
-public abstract class NotasDB : RoomDatabase() {
+abstract class NotasDB : RoomDatabase() {
 
     abstract fun notaDao(): NotaDao
 
@@ -22,7 +22,7 @@ public abstract class NotasDB : RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    var notaDao = database.notaDao()
+                    database.notaDao()
                 }
 
             }

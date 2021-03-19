@@ -21,4 +21,7 @@ interface EndPoints {
 
     @GET("ocorrencias/getAll")
     fun getAllOcorrencias() : Call<List<LinhaOcorrencia>>
+
+    @GET("ocorrencias/getOcorrencia/{id}")
+    fun getOcorrenciaPorId(@Path("id") id: Int?) : Call<RespostaOcorrencias>
 }

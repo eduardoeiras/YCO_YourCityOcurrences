@@ -1,6 +1,5 @@
 package com.example.yco_yourcityocurrences.adaptors
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.entities.Nota
 
-class NotaAdaptor internal constructor(context: Context, var clickListener : OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
+class NotaAdaptor internal constructor(var clickListener: OnNotaClickListener) : RecyclerView.Adapter<NotaAdaptor.NotaViewHolder>() {
 
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var notas = emptyList<Nota>()
 
     class NotaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -43,6 +43,8 @@ class ActivityLoginRealizado : AppCompatActivity(){
             }
             true
         }
+
+
     }
 
     private fun realizarLogout() {

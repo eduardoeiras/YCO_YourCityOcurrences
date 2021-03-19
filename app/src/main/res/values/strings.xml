@@ -51,4 +51,7 @@
     <string name="warning_logout">Are you sure you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="reset_map_camera_button">Reset câmera to current location</string>
+    <string name="layout_mapa_title">Ocurrences Map</string>
+    <string name="botao_pesquisar">Search ocurrence button.</string>
 </resources>

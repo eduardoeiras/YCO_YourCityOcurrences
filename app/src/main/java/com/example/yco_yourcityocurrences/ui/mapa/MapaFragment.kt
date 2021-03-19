@@ -3,6 +3,8 @@ package com.example.yco_yourcityocurrences.ui.mapa
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -10,7 +12,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.example.yco_yourcityocurrences.ActivityLoginRealizado
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
@@ -18,7 +22,9 @@ import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.Ocorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
+import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,8 +43,18 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var nomeUser: String
 
+    private lateinit var gMap: GoogleMap
+
+    private lateinit var lastLocation: Location
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
+    private var resetCamera = true
+
 
     private val callback = OnMapReadyCallback { googleMap ->
+        gMap = googleMap
         val request = ServiceBuilder.buildService(EndPoints::class.java)
         if(nomeUser != "") {
             val call = request.getOcorrenciasUtilizador(nomeUser = nomeUser)
@@ -138,10 +154,60 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val root = inflater.inflate(R.layout.fragment_mapa, container, false)
         sharedPreferences = this.requireActivity().getSharedPreferences(getString(R.string.user_creds_file_key), Context.MODE_PRIVATE)
         nomeUser = sharedPreferences.getString(getString(R.string.username), "").toString()
 
-        return inflater.inflate(R.layout.fragment_mapa, container, false)
+        root.findViewById<ImageButton>(R.id.reset_location).setOnClickListener {
+                _ -> resetCamera = true
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                if(resetCamera) {
+                    lastLocation = p0.lastLocation
+                    val loc = LatLng(lastLocation.latitude, lastLocation.longitude)
+                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
+                    resetCamera = false
+                }
+            }
+        }
+
+        createLocationRequest()
+
+        return root
+    }
+
+    private fun startLocationUpdates() {
+        if(ActivityCompat.checkSelfPermission( this.requireActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_ACCESS_CODE)
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.create()
+
+        locationRequest.interval = 10000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -153,7 +219,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     override fun onMarkerClick(p0: Marker?): Boolean {
         val tag = p0?.tag
         if(tag is List<*>) {
-
+            val intent = Intent(this.context, EditarRemoverOcorrencia::class.java)
+            intent.putExtra("ID_OCORRENCIA", tag.toString())
+            startActivity(intent)
         }
         else {
             val intent = Intent(this.context, VerificarOcorrencia::class.java)
@@ -161,5 +229,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             startActivity(intent)
         }
         return true
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_ACCESS_CODE = 1
     }
 }
