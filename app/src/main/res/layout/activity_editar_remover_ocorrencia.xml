@@ -10,6 +10,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <EditText
+            android:id="@+id/er_ocorrencia_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/er_ocurrence_title_hint"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/voltar_ver_ocorrencia" />
+
+        <EditText
+            android:id="@+id/er_ocorrencia_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:gravity="top"
+            android:hint="@string/er_ocurrence_desc_hint"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:lines="10"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
 
         <TextView
             android:id="@+id/titulo_detalhes_user"
@@ -69,13 +109,13 @@
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/divider_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_descricao_erro" />
 
         <View
             android:id="@+id/divider10"
@@ -106,28 +146,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/ocorrencia_titulo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/voltar_ver_ocorrencia" />
-
         <ImageView
             android:id="@+id/img_ocorrencia"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_titulo"
+            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_titulo_erro"
             tools:ignore="ContentDescription" />
 
         <View
@@ -144,21 +171,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_ocorrencia" />
 
-        <TextView
-            android:id="@+id/ocorrencia_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
         <TextView
             android:id="@+id/titulo_detalhes_loc"
@@ -251,12 +263,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="50dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:textColor="#252525"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ocorrencia_username_title"
@@ -276,6 +286,41 @@
             app:layout_constraintBottom_toBottomOf="@+id/ocorrencia_data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ocorrencia_data" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/botao_delete_ocorrencia"
+            app:backgroundTint="@color/delete_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_data" />
+
+        <TextView
+            android:id="@+id/ocorrencia_titulo_erro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/design_default_color_error"
+            app:layout_constraintEnd_toEndOf="@+id/er_ocorrencia_titulo"
+            app:layout_constraintStart_toStartOf="@+id/er_ocorrencia_titulo"
+            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_titulo" />
+
+        <TextView
+            android:id="@+id/ocorrencia_descricao_erro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/design_default_color_error"
+            app:layout_constraintEnd_toEndOf="@+id/er_ocorrencia_desc"
+            app:layout_constraintStart_toStartOf="@+id/er_ocorrencia_desc"
+            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

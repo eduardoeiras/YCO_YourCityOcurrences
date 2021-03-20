@@ -18,7 +18,7 @@ class NotaAdaptor internal constructor(var clickListener: OnNotaClickListener) :
 
         fun inicializar(item : Nota, action : OnNotaClickListener) {
             titulo.text = item.titulo
-            var resumoTexto = ""
+            val resumoTexto: String
             if(item.conteudo.length <= 100) {
                 resumoTexto = item.conteudo
             }

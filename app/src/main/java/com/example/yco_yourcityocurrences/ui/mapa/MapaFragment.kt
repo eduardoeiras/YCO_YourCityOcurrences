@@ -8,19 +8,16 @@ import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.example.yco_yourcityocurrences.ActivityLoginRealizado
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
-import com.example.yco_yourcityocurrences.api.classes.responses.Ocorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
@@ -220,7 +217,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         val tag = p0?.tag
         if(tag is List<*>) {
             val intent = Intent(this.context, EditarRemoverOcorrencia::class.java)
-            intent.putExtra("ID_OCORRENCIA", tag.toString())
+            intent.putExtra("ID_OCORRENCIA", tag[1].toString())
             startActivity(intent)
         }
         else {

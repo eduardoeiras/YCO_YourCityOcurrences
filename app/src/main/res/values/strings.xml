@@ -34,7 +34,7 @@
     <string name="confirmar_reg">Sign In</string>
     <string name="loc_details_title">Location Details</string>
     <string name="ocurrence_distrito_title">District/State:</string>
-    <string name="ocorrencia_rua_title">Street:</string>
+    <string name="ocorrencia_morada_title">Address:</string>
     <string name="ocurrence_coords_title">Coordinates:</string>
     <string name="user_details_title">Comunication Details:</string>
     <string name="ocurrence_username_title">Username:</string>
@@ -53,5 +53,8 @@
     <string name="no">No</string>
     <string name="reset_map_camera_button">Reset câmera to current location</string>
     <string name="layout_mapa_title">Ocurrences Map</string>
-    <string name="botao_pesquisar">Search ocurrence button.</string>
+    <string name="botao_pesquisar">Search occurrence button.</string>
+    <string name="er_ocurrence_title_hint">Occurrence Title</string>
+    <string name="er_ocurrence_desc_hint">Description</string>
+    <string name="botao_delete_ocorrencia">Give as resolved</string>
 </resources>

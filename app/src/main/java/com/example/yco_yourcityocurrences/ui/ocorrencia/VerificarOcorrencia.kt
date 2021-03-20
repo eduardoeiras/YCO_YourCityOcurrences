@@ -1,5 +1,6 @@
 package com.example.yco_yourcityocurrences.ui.ocorrencia
 
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,7 @@ import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,21 +19,19 @@ class VerificarOcorrencia : AppCompatActivity() {
     private lateinit var titulo: TextView
     private lateinit var imagem: ImageView
     private lateinit var descricao: TextView
-    private lateinit var rua: TextView
-    private lateinit var distrito: TextView
+    private lateinit var morada: TextView
     private lateinit var coordenadas: TextView
     private lateinit var nomeUtilizador: TextView
     private lateinit var data: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_verificar_ocorrencia)
+        setContentView(R.layout.activity_editar_remover_ocorrencia)
 
-        titulo = findViewById(R.id.ocorrencia_titulo)
+        titulo = findViewById(R.id.er_ocorrencia_titulo)
         imagem = findViewById(R.id.img_ocorrencia)
-        descricao = findViewById(R.id.ocorrencia_desc)
-        rua = findViewById(R.id.ocorrencia_rua)
-        distrito = findViewById(R.id.ocorrencia_distrito)
+        descricao = findViewById(R.id.er_ocorrencia_desc)
+        morada = findViewById(R.id.ocorrencia_morada)
         coordenadas = findViewById(R.id.ocorrencia_coords)
         nomeUtilizador = findViewById(R.id.ocorrencia_username)
         data = findViewById(R.id.ocorrencia_data)
@@ -47,6 +47,13 @@ class VerificarOcorrencia : AppCompatActivity() {
                         if(ocorrencia != null) {
                             titulo.setText(ocorrencia.titulo)
                             descricao.setText(ocorrencia.descricao)
+                            Picasso.get().load(ocorrencia.imagem).into(imagem)
+                            val latLng = "${ocorrencia.latitude}, ${ocorrencia.longitude}"
+                            val adress = getAdress(ocorrencia.latitude.toDouble(), ocorrencia.longitude.toDouble())
+                            morada.setText(adress)
+                            coordenadas.setText(latLng)
+                            nomeUtilizador.setText(ocorrencia.nomeUtilizador)
+                            data.setText(ocorrencia.dataComunicacao)
                         }
 
                     } else {
@@ -62,6 +69,12 @@ class VerificarOcorrencia : AppCompatActivity() {
                 Toast.makeText(this@VerificarOcorrencia, t.message, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun getAdress(lat: Double, lng: Double): String {
+        val geocoder = Geocoder(this)
+        val list = geocoder.getFromLocation(lat, lng, 1)
+        return list[0].getAddressLine(0)
     }
 
     fun voltar(view: View) {

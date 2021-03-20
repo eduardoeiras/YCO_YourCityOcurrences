@@ -19,9 +19,10 @@
         android:theme="@style/Theme.YCOYourCityOcurrences" >
         <activity
             android:name=".ActivityLoginRealizado"
-            android:label="@string/title_activity_login_realizado" >
-        </activity>
+            android:label="@string/title_activity_login_realizado"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.ocorrencia.VerificarOcorrencia" />
+        <activity android:name=".ui.ocorrencia.EditarRemoverOcorrencia" />
         <activity android:name=".ui.registo.RegistoActivity" />
         <activity
             android:name=".SpashScreen"

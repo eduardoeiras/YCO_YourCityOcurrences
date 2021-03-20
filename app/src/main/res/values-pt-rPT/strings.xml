@@ -32,7 +32,7 @@
     <string name="title_ajuda">Ajuda</string>
     <string name="loc_details_title">Detalhes da Localização</string>
     <string name="ocurrence_distrito_title">Distrito:</string>
-    <string name="ocorrencia_rua_title">Rua:</string>
+    <string name="ocorrencia_morada_title">Morada:</string>
     <string name="ocurrence_coords_title">Coordenadas:</string>
     <string name="user_details_title">Detalhes da Comunicação:</string>
     <string name="ocurrence_username_title">Nome de Utilizador:</string>
@@ -48,4 +48,7 @@
     <string name="reset_map_camera_button">Focar câmera na localização atual</string>
     <string name="layout_mapa_title">Mapa de Ocorrências</string>
     <string name="botao_pesquisar">Botão de pesquisa de uma ocorrência</string>
+    <string name="er_ocurrence_title_hint">Título da Ocorrência</string>
+    <string name="er_ocurrence_desc_hint">Descrição</string>
+    <string name="botao_delete_ocorrencia">Dar como resolvida</string>
 </resources>
