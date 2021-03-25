@@ -57,4 +57,13 @@
     <string name="er_ocurrence_title_hint">Occurrence Title</string>
     <string name="er_ocurrence_desc_hint">Description</string>
     <string name="botao_delete_ocorrencia">Give as resolved</string>
+    <string name="er_ocurrence_tipo_hint">Occurrence Type</string>
+    <string name="ocurrence_type_title">Occurrence Type:</string>
+    <string name="ocorrencia_titulo_erro">The title must not be empty!</string>
+    <string name="ocorrencia_desc_erro">The description must not be empty!</string>
+    <string name="ocorrencia_tipo_erro">The occurrence type must not be empty</string>
+    <string name="alt_img_warning">Do you want to change the ocurrence\'s image?</string>
+    <string name="ocorrencia_atualizada">Occurrence successfully updated!</string>
+    <string name="erro_permissoes_storage">To change the image the app requires access to the phone\'s storage.</string>
+    <string name="erro_select_img">An error occurred when selecting the image, please try again.</string>
 </resources>

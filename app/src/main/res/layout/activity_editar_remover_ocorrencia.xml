@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.ocorrencia.VerificarOcorrencia">
+    tools:context=".ui.ocorrencia.EditarRemoverOcorrencia">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:hint="@string/er_ocurrence_desc_hint"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
-            android:lines="10"
+            android:lines="5"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,12 +108,11 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:background="@color/divider_color"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ocorrencia_descricao_erro" />
 
@@ -137,7 +136,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:background="#FFFFFF"
             android:contentDescription="@string/voltar_ve_nota"
@@ -151,26 +149,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:onClick="alterarImagem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ocorrencia_titulo_erro"
             tools:ignore="ContentDescription" />
 
+
         <View
             android:id="@+id/divider8"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:background="@color/divider_color"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_ocorrencia" />
-
+            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_tipo_erro" />
 
         <TextView
             android:id="@+id/titulo_detalhes_loc"
@@ -227,7 +225,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/ocurrence_username_title"
             android:textColor="@color/black"
@@ -242,10 +239,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:textColor="#252525"
@@ -259,10 +254,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:textColor="#252525"
@@ -277,7 +270,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/ocurrence_data_title"
             android:textColor="@color/black"
@@ -308,6 +300,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:textColor="@color/design_default_color_error"
             app:layout_constraintEnd_toEndOf="@+id/er_ocorrencia_titulo"
             app:layout_constraintStart_toStartOf="@+id/er_ocorrencia_titulo"
@@ -317,10 +310,57 @@
             android:id="@+id/ocorrencia_descricao_erro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:textColor="@color/design_default_color_error"
             app:layout_constraintEnd_toEndOf="@+id/er_ocorrencia_desc"
             app:layout_constraintStart_toStartOf="@+id/er_ocorrencia_desc"
             app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_desc" />
+
+        <TextView
+            android:id="@+id/er_ocorrencia_tipo_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/ocurrence_type_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_ocorrencia" />
+
+        <EditText
+            android:id="@+id/er_ocorrencia_tipo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:hint="@string/er_ocurrence_tipo_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_tipo_titulo" />
+
+        <TextView
+            android:id="@+id/ocorrencia_tipo_erro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:textColor="@color/design_default_color_error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_tipo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

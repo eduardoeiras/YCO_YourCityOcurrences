@@ -15,6 +15,7 @@ data class Ocorrencia(
         val id_ocorrencia: Int,
         val titulo: String,
         val descricao: String,
+        val tipo: String,
         val imagem: String,
         val dataComunicacao: String,
         val latitude: String,

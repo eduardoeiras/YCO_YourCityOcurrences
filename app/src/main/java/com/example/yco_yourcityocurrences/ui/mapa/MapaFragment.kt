@@ -1,5 +1,6 @@
 package com.example.yco_yourcityocurrences.ui.mapa
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -19,6 +20,9 @@ import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.entities.Nota
+import com.example.yco_yourcityocurrences.ui.notas.AdicionarNotaActivity
+import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
 import com.google.android.gms.location.*
@@ -34,6 +38,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
@@ -48,6 +54,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var locationCallback: LocationCallback
 
     private var resetCamera = true
+
+    //private val editarRemoverOcorrenciaReqCode = 1
 
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -193,7 +201,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create()
 
-        locationRequest.interval = 10000
+        locationRequest.interval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
@@ -227,6 +235,23 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         }
         return true
     }
+
+    /*
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == editarRemoverOcorrenciaReqCode && resultCode == Activity.RESULT_OK) {
+            val titulo = data?.getStringExtra(EditarRemoverOcorrencia.REPLY_TITLE).toString()
+            val conteudo = data?.getStringExtra(EditarRemoverOcorrencia.REPLY_CONTENT).toString()
+
+
+        }
+        if(requestCode == editarRemoverOcorrenciaReqCode && resultCode == EditarRemoverOcorrencia.RESULT_DELETE) {
+            val id = data?.getStringExtra(VerEditarNotaActivity.REPLY_ID).toString().toInt()
+
+
+        }
+    }*/
 
     companion object {
         private const val LOCATION_PERMISSION_ACCESS_CODE = 1

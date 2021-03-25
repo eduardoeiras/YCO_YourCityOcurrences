@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -34,12 +35,14 @@ class AdicionarNotaActivity : AppCompatActivity() {
     }
 
     fun adicionarNota(view: View) {
-        val replyIntent = Intent()
-        if(!verificaCampos()) {
-            replyIntent.putExtra(REPLY_TITLE, editTitulo.text.toString())
-            replyIntent.putExtra(REPLY_CONTENT, editConteudo.text.toString())
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
+        if(view is Button) {
+            val replyIntent = Intent()
+            if(!verificaCampos()) {
+                replyIntent.putExtra(REPLY_TITLE, editTitulo.text.toString())
+                replyIntent.putExtra(REPLY_CONTENT, editConteudo.text.toString())
+                setResult(Activity.RESULT_OK, replyIntent)
+                finish()
+            }
         }
     }
 

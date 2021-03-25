@@ -51,4 +51,13 @@
     <string name="er_ocurrence_title_hint">Título da Ocorrência</string>
     <string name="er_ocurrence_desc_hint">Descrição</string>
     <string name="botao_delete_ocorrencia">Dar como resolvida</string>
+    <string name="er_ocurrence_tipo_hint">Tipo de Ocorrência</string>
+    <string name="ocurrence_type_title">Tipo de Ocorrência</string>
+    <string name="ocorrencia_titulo_erro">O título não pode estar vazio!</string>
+    <string name="ocorrencia_desc_erro">A descrição não pode estar vazia!</string>
+    <string name="ocorrencia_tipo_erro">O tipo de ocorrência não pode ser vazio!</string>
+    <string name="alt_img_warning">Pretende alterar a imagem da ocorrência?</string>
+    <string name="ocorrencia_atualizada">Ocurrência atualizada com sucesso!</string>
+    <string name="erro_permissoes_storage">Para alterar a imagem, a aplicação necessita do acesso aos ficheiros do dispositivo.</string>
+    <string name="erro_select_img">Ocorreu um erro na seleção da imagem, por favor tente novamente.</string>
 </resources>

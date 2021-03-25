@@ -19,6 +19,7 @@ class VerificarOcorrencia : AppCompatActivity() {
     private lateinit var titulo: TextView
     private lateinit var imagem: ImageView
     private lateinit var descricao: TextView
+    private lateinit var tipo: TextView
     private lateinit var morada: TextView
     private lateinit var coordenadas: TextView
     private lateinit var nomeUtilizador: TextView
@@ -26,11 +27,12 @@ class VerificarOcorrencia : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editar_remover_ocorrencia)
+        setContentView(R.layout.activity_verificar_ocorrencia)
 
-        titulo = findViewById(R.id.er_ocorrencia_titulo)
+        titulo = findViewById(R.id.ocorrencia_titulo)
         imagem = findViewById(R.id.img_ocorrencia)
-        descricao = findViewById(R.id.er_ocorrencia_desc)
+        descricao = findViewById(R.id.ocorrencia_desc)
+        tipo = findViewById(R.id.ocorrencia_tipo)
         morada = findViewById(R.id.ocorrencia_morada)
         coordenadas = findViewById(R.id.ocorrencia_coords)
         nomeUtilizador = findViewById(R.id.ocorrencia_username)
@@ -47,6 +49,7 @@ class VerificarOcorrencia : AppCompatActivity() {
                         if(ocorrencia != null) {
                             titulo.setText(ocorrencia.titulo)
                             descricao.setText(ocorrencia.descricao)
+                            tipo.setText(ocorrencia.tipo)
                             Picasso.get().load(ocorrencia.imagem).into(imagem)
                             val latLng = "${ocorrencia.latitude}, ${ocorrencia.longitude}"
                             val adress = getAdress(ocorrencia.latitude.toDouble(), ocorrencia.longitude.toDouble())

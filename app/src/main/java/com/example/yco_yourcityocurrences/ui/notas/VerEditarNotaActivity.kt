@@ -54,8 +54,6 @@ class VerEditarNotaActivity : AppCompatActivity() {
         }
     }
 
-
-
     fun verificarAlteracoes() : Boolean {
         var alterado = false
 

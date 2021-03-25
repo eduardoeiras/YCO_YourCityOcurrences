@@ -3,19 +3,23 @@ package com.example.yco_yourcityocurrences.ui.login
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.yco_yourcityocurrences.AES256.ChCrypto
 import com.example.yco_yourcityocurrences.ActivityLoginRealizado
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
-import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
+import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
 import com.example.yco_yourcityocurrences.ui.registo.RegistoActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +32,7 @@ class LoginFragment : Fragment() {
     private lateinit var editPwd: EditText
     private lateinit var sharedPreferences: SharedPreferences
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +60,9 @@ class LoginFragment : Fragment() {
         val pwd = editPwd.text.toString()
         if (nomeUser.isNotEmpty() && pwd.isNotEmpty()) {
             val request = ServiceBuilder.buildService(EndPoints::class.java)
-            val call = request.realizarLogin(nomeUser = nomeUser, pwd = pwd)
+            val encryptedUserName = ChCrypto.aesEncrypt(nomeUser, "4u7x!A%D*G-KaPdSgVkYp3s5v8y/B?E(")
+            val encryptedPwd = ChCrypto.aesEncrypt(pwd, "4u7x!A%D*G-KaPdSgVkYp3s5v8y/B?E(")
+            val call = request.realizarLogin(nomeUser = encryptedUserName, pwd = encryptedPwd)
             call.enqueue(object : Callback<Resposta> {
                 override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
                     if (response.isSuccessful) {
