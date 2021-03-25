@@ -66,4 +66,6 @@
     <string name="ocorrencia_atualizada">Occurrence successfully updated!</string>
     <string name="erro_permissoes_storage">To change the image the app requires access to the phone\'s storage.</string>
     <string name="erro_select_img">An error occurred when selecting the image, please try again.</string>
+    <string name="remover_ocorrencia">Are you sure you want to set ocurrence as resolved? The occurrence will no longuer show up for other users!</string>
+    <string name="ocorrencia_removida">Occurrence Resolved!</string>
 </resources>

@@ -60,4 +60,6 @@
     <string name="ocorrencia_atualizada">Ocurrência atualizada com sucesso!</string>
     <string name="erro_permissoes_storage">Para alterar a imagem, a aplicação necessita do acesso aos ficheiros do dispositivo.</string>
     <string name="erro_select_img">Ocorreu um erro na seleção da imagem, por favor tente novamente.</string>
+    <string name="remover_ocorrencia">Tem a certeza que pretende dar a ocorrência como resolvida? A ocorrência já não aparecerá para os outros utilizadores!</string>
+    <string name="ocorrencia_removida">Ocorrência dada como resolvida!</string>
 </resources>
