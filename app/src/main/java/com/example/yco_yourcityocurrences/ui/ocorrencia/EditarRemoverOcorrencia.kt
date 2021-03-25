@@ -330,4 +330,51 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
             }
         }
     }
+
+    fun darComoResolvida(view: View) {
+        if(view is Button) {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.warning_dialog, null)
+            val mBuilder = AlertDialog.Builder(this)
+                    .setView(dialogView)
+            val mAlertDialog = mBuilder.show()
+
+            val botaoSim = dialogView.findViewById<Button>(R.id.warning_botao_sim)
+            val botaoNao = dialogView.findViewById<Button>(R.id.warning_botao_nao)
+
+            dialogView.findViewById<TextView>(R.id.wd_message).setText(getString(R.string.remover_ocorrencia))
+
+            botaoSim.setOnClickListener {
+                val request = ServiceBuilder.buildService(EndPoints::class.java)
+                val call = request.removerOcorrencia(ocorrenciaOriginal.id_ocorrencia)
+                call.enqueue(object : Callback<Resposta> {
+                    override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
+                        if (response.isSuccessful) {
+                            if (response.body()?.status == true) {
+                                Toast.makeText(
+                                        this@EditarRemoverOcorrencia,
+                                        getString(R.string.ocorrencia_removida),
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                        this@EditarRemoverOcorrencia,
+                                        response.body()?.MSG,
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Resposta>, t: Throwable) {
+                        Toast.makeText(this@EditarRemoverOcorrencia, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+                mAlertDialog.dismiss()
+            }
+
+            botaoNao.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
+    }
 }

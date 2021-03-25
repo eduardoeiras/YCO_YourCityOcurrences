@@ -40,4 +40,8 @@ interface EndPoints {
     @Multipart
     @POST("ocorrencias/submeterImagem")
     fun submeterImagem(@Part imagem :MultipartBody.Part, @Part("name") name: RequestBody) : Call<RespostaImg>
+
+    //Endpoint para a remoção de uma ocorrência
+    @DELETE("ocorrencias/deleteOcorrencia/{id}")
+    fun removerOcorrencia(@Path("id") id: Int?) : Call<Resposta>
 }
