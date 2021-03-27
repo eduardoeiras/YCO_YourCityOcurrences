@@ -1,6 +1,7 @@
 package com.example.yco_yourcityocurrences.ui.ocorrencia
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -34,7 +35,6 @@ import java.io.File
 
 
 class EditarRemoverOcorrencia : AppCompatActivity() {
-
     private lateinit var titulo: EditText
     private lateinit var imagem: ImageView
     private lateinit var descricao: EditText
@@ -187,6 +187,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                                         getString(R.string.ocorrencia_atualizada),
                                         Toast.LENGTH_LONG
                                 ).show()
+                                val replyIntent = Intent()
+                                setResult(RESULT_EDIT, replyIntent)
                                 finish()
                             } else {
                                 Toast.makeText(
@@ -204,6 +206,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                 })
             }
             else {
+                val replyIntent = Intent()
+                setResult(Activity.RESULT_CANCELED, replyIntent)
                 finish()
             }
         }
@@ -361,6 +365,9 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                                         getString(R.string.ocorrencia_removida),
                                         Toast.LENGTH_LONG
                                 ).show()
+                                val replyIntent = Intent()
+                                setResult(RESULT_REMOVE, replyIntent)
+                                finish()
                             } else {
                                 Toast.makeText(
                                         this@EditarRemoverOcorrencia,
@@ -382,5 +389,10 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                 mAlertDialog.dismiss()
             }
         }
+    }
+
+    companion object {
+        const val RESULT_REMOVE = 1
+        const val RESULT_EDIT = 2
     }
 }

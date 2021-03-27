@@ -2,6 +2,7 @@ package com.example.yco_yourcityocurrences.ui.ocorrencia
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -27,6 +28,7 @@ import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaImg
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
 import com.example.yco_yourcityocurrences.ui.mapa.MapaFragment
+import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
 import com.squareup.picasso.Picasso
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -41,7 +43,6 @@ import java.time.format.DateTimeFormatter
 
 
 class AdicionarOcorrencia : AppCompatActivity() {
-
     private lateinit var titulo: EditText
     private lateinit var imagem: ImageView
     private lateinit var no_img_text: TextView
@@ -98,6 +99,8 @@ class AdicionarOcorrencia : AppCompatActivity() {
         nomeUser = sharedPreferences.getString(getString(R.string.username), "").toString()
         if(nomeUser == "") {
             Toast.makeText(this, getString(R.string.erro_obtencao_username), Toast.LENGTH_SHORT).show()
+            val replyIntent = Intent()
+            setResult(Activity.RESULT_CANCELED, replyIntent)
             finish()
         }
     }
@@ -276,6 +279,8 @@ class AdicionarOcorrencia : AppCompatActivity() {
                                 getString(R.string.ocorrencia_adicionada),
                                 Toast.LENGTH_LONG
                         ).show()
+                        val replyIntent = Intent()
+                        setResult(Activity.RESULT_OK, replyIntent)
                         finish()
                     } else {
                         Toast.makeText(
@@ -295,6 +300,8 @@ class AdicionarOcorrencia : AppCompatActivity() {
 
     fun cancelar(view: View) {
         if(view is Button) {
+            val replyIntent = Intent()
+            setResult(Activity.RESULT_CANCELED, replyIntent)
             finish()
         }
     }

@@ -81,4 +81,9 @@
     <string name="label_green_marker">My Occurrences</string>
     <string name="img_green_marker_cd">Green marker, indicating user created ocurrences.</string>
     <string name="img_red_marker_cd">Red marker, indicating other user\'s occurrences.</string>
+    <string name="filtros_title">Occurrences Filters</string>
+    <string name="filtrar_tipo">Type:</string>
+    <string name="btn_filtro_tipo">Filter By Type</string>
+    <string name="filtrar_raio">Radius in Kilometers (km) :</string>
+    <string name="btn_filtro_raio">Filter by Radius</string>
 </resources>

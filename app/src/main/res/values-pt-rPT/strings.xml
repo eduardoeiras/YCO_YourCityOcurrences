@@ -75,4 +75,9 @@
     <string name="label_green_marker">As minhas ocorrências</string>
     <string name="img_green_marker_cd">Marcador verde, indicando as ocorrências do próprio utilizador.</string>
     <string name="img_red_marker_cd">Marcador vermelho indicando as ocorrências de outros utilizadores.</string>
+    <string name="filtros_title">Filtragem de Ocorrências</string>
+    <string name="filtrar_tipo">Tipo:</string>
+    <string name="btn_filtro_tipo">Filtrar Por Tipo</string>
+    <string name="filtrar_raio">Raio em Quilómetros (km):</string>
+    <string name="btn_filtro_raio">Filtrar Por Raio</string>
 </resources>

@@ -53,6 +53,6 @@ interface EndPoints {
     ) : Call<Resposta>
 
     //Endpoint para a remoção de uma ocorrência
-    @DELETE("ocorrencias/deleteOcorrencia/{id}")
+    @POST("ocorrencias/deleteOcorrencia/{id}")
     fun removerOcorrencia(@Path("id") id: Int?) : Call<Resposta>
 }

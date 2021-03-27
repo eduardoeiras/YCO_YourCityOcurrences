@@ -15,8 +15,7 @@
             android:id="@+id/ocorrencia_tipo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:ems="10"
@@ -24,21 +23,21 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ocorrencia_tipo_titulo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_tipo_titulo" />
+            app:layout_constraintStart_toEndOf="@+id/ocorrencia_tipo_titulo"
+            app:layout_constraintTop_toTopOf="@+id/ocorrencia_tipo_titulo" />
 
         <TextView
             android:id="@+id/ocorrencia_tipo_titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/ocurrence_type_title"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_ocorrencia" />
 
@@ -151,9 +150,10 @@
 
         <ImageView
             android:id="@+id/img_ocorrencia"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ocorrencia_titulo"
