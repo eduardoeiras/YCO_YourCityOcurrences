@@ -62,10 +62,23 @@
     <string name="ocorrencia_titulo_erro">The title must not be empty!</string>
     <string name="ocorrencia_desc_erro">The description must not be empty!</string>
     <string name="ocorrencia_tipo_erro">The occurrence type must not be empty</string>
-    <string name="alt_img_warning">Do you want to change the ocurrence\'s image?</string>
+    <string name="alt_img_warning">Do you want to change the occurrence\'s image?</string>
     <string name="ocorrencia_atualizada">Occurrence successfully updated!</string>
-    <string name="erro_permissoes_storage">To change the image the app requires access to the phone\'s storage.</string>
+    <string name="erro_permissoes_storage">To select the image, access to the phone\'s storage is required.</string>
     <string name="erro_select_img">An error occurred when selecting the image, please try again.</string>
-    <string name="remover_ocorrencia">Are you sure you want to set ocurrence as resolved? The occurrence will no longuer show up for other users!</string>
+    <string name="remover_ocorrencia">Are you sure you want to set occurrence as resolved? The occurrence will no longer show up for other users!</string>
     <string name="ocorrencia_removida">Occurrence Resolved!</string>
+    <string name="titulo_adicionar_ocorrencia">Communicate a New Occurrence</string>
+    <string name="add_occurrence_button">Add Occurrence</string>
+    <string name="selecionarImg">Select Image</string>
+    <string name="selectImgTitle">Occurrence\'s Image</string>
+    <string name="no_img_selected">No image selected.</string>
+    <string name="selected_img_desc">The selected image on the device for the occurrence.</string>
+    <string name="erro_obtencao_username">Could not get the logged in user\'s username!</string>
+    <string name="ocorrencia_adicionada">Occurrence Added!</string>
+    <string name="img_obrigatoria">You must select an image to add to the occurrence!</string>
+    <string name="label_red_marker">Other User\'s Occurrences</string>
+    <string name="label_green_marker">My Occurrences</string>
+    <string name="img_green_marker_cd">Green marker, indicating user created ocurrences.</string>
+    <string name="img_red_marker_cd">Red marker, indicating other user\'s occurrences.</string>
 </resources>

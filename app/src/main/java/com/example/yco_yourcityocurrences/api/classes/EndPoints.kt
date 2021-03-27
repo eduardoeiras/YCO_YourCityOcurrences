@@ -8,6 +8,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.math.BigDecimal
+import java.util.*
 
 interface EndPoints {
 
@@ -40,4 +42,13 @@ interface EndPoints {
     @Multipart
     @POST("ocorrencias/submeterImagem")
     fun submeterImagem(@Part imagem :MultipartBody.Part, @Part("name") name: RequestBody) : Call<RespostaImg>
+
+    //Endpoint para a criação de uma nova ocorrência
+    @FormUrlEncoded
+    @POST("ocorrencias/registar")
+    fun criarOcorrencia(@Field("titulo") titulo: String?, @Field("desc") desc: String?,
+                        @Field("imagem") imagem: String?, @Field("tipo") tipo: String?, @Field("dataComunicacao") dataComunicacao: String?,
+                        @Field("latitude") latitude: BigDecimal?, @Field("longitude") longitude: BigDecimal?,
+                        @Field("nomeUtilizador") nomeUtilizador: String?
+    ) : Call<Resposta>
 }

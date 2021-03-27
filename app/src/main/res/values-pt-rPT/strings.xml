@@ -62,4 +62,17 @@
     <string name="erro_select_img">Ocorreu um erro na seleção da imagem, por favor tente novamente.</string>
     <string name="remover_ocorrencia">Tem a certeza que pretende dar a ocorrência como resolvida? A ocorrência já não aparecerá para os outros utilizadores!</string>
     <string name="ocorrencia_removida">Ocorrência dada como resolvida!</string>
+    <string name="titulo_adicionar_ocorrencia">Comunicar uma Nova Ocorrência</string>
+    <string name="add_occurrence_button">Adicionar Ocorrência</string>
+    <string name="selecionarImg">Selecionar Imagem</string>
+    <string name="selectImgTitle">Imagem da Ocorrência</string>
+    <string name="no_img_selected">Nenhuma imagem selecionada.</string>
+    <string name="selected_img_desc">A imagem selecionada do dispositivo para a ocorrência.</string>
+    <string name="erro_obtencao_username">Não foi possível obter o nome de utilizador com sessão iniciada!</string>
+    <string name="ocorrencia_adicionada">Ocorrência Adicionada!</string>
+    <string name="img_obrigatoria">É necessário selecionar uma imagem para a ocorrência!</string>
+    <string name="label_red_marker">Ocorrências de outros utilizadores</string>
+    <string name="label_green_marker">As minhas ocorrências</string>
+    <string name="img_green_marker_cd">Marcador verde, indicando as ocorrências do próprio utilizador.</string>
+    <string name="img_red_marker_cd">Marcador vermelho indicando as ocorrências de outros utilizadores.</string>
 </resources>

@@ -33,8 +33,8 @@ class VerificarOcorrencia : AppCompatActivity() {
         imagem = findViewById(R.id.img_ocorrencia)
         descricao = findViewById(R.id.ocorrencia_desc)
         tipo = findViewById(R.id.ocorrencia_tipo)
-        morada = findViewById(R.id.ocorrencia_morada)
-        coordenadas = findViewById(R.id.ocorrencia_coords)
+        morada = findViewById(R.id.add_ocorrencia_morada)
+        coordenadas = findViewById(R.id.add_ocorrencia_coords)
         nomeUtilizador = findViewById(R.id.ocorrencia_username)
         data = findViewById(R.id.ocorrencia_data)
 

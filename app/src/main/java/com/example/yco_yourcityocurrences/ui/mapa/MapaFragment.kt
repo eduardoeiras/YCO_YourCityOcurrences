@@ -9,11 +9,12 @@ import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
@@ -23,6 +24,7 @@ import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrenc
 import com.example.yco_yourcityocurrences.entities.Nota
 import com.example.yco_yourcityocurrences.ui.notas.AdicionarNotaActivity
 import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
+import com.example.yco_yourcityocurrences.ui.ocorrencia.AdicionarOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
 import com.google.android.gms.location.*
@@ -53,10 +55,11 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
+    private lateinit var fabAdicionarOcorrencia: View
+    private lateinit var layoutLabels: ConstraintLayout
+    private lateinit var botaoFiltros: ImageButton
+
     private var resetCamera = true
-
-    //private val editarRemoverOcorrenciaReqCode = 1
-
 
     private val callback = OnMapReadyCallback { googleMap ->
         gMap = googleMap
@@ -77,7 +80,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                                     val obj: List<Int> = listOf(0, idOcorrencia)
                                     val marker = googleMap.addMarker(MarkerOptions()
                                             .position(LatLng(lat, lng)))
-                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     marker.tag = obj
                                 }
                             }
@@ -167,6 +170,31 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                 _ -> resetCamera = true
         }
 
+        fabAdicionarOcorrencia = root.findViewById(R.id.adicionarOcorrencia)
+        layoutLabels = root.findViewById<ConstraintLayout>(R.id.constraint_layout_labels)
+
+        if(nomeUser != "") {
+            layoutLabels.visibility = View.VISIBLE
+            fabAdicionarOcorrencia.visibility = View.VISIBLE
+        }
+        else {
+            layoutLabels.visibility = View.INVISIBLE
+            fabAdicionarOcorrencia.visibility = View.INVISIBLE
+        }
+
+        fabAdicionarOcorrencia.setOnClickListener { _ ->
+            val intent = Intent(this.context, AdicionarOcorrencia::class.java)
+            intent.putExtra("LAT", lastLocation.latitude)
+            intent.putExtra("LNG", lastLocation.longitude)
+            startActivity(intent)
+        }
+
+        botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
+
+        botaoFiltros.setOnClickListener { _ ->
+
+        }
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
 
         locationCallback = object : LocationCallback() {
@@ -235,23 +263,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         }
         return true
     }
-
-    /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == editarRemoverOcorrenciaReqCode && resultCode == Activity.RESULT_OK) {
-            val titulo = data?.getStringExtra(EditarRemoverOcorrencia.REPLY_TITLE).toString()
-            val conteudo = data?.getStringExtra(EditarRemoverOcorrencia.REPLY_CONTENT).toString()
-
-
-        }
-        if(requestCode == editarRemoverOcorrenciaReqCode && resultCode == EditarRemoverOcorrencia.RESULT_DELETE) {
-            val id = data?.getStringExtra(VerEditarNotaActivity.REPLY_ID).toString().toInt()
-
-
-        }
-    }*/
 
     companion object {
         private const val LOCATION_PERMISSION_ACCESS_CODE = 1

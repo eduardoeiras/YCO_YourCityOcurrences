@@ -10,7 +10,6 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -70,8 +69,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
         imagem = findViewById(R.id.img_ocorrencia)
         descricao = findViewById(R.id.er_ocorrencia_desc)
         tipo = findViewById(R.id.er_ocorrencia_tipo)
-        morada = findViewById(R.id.ocorrencia_morada)
-        coordenadas = findViewById(R.id.ocorrencia_coords)
+        morada = findViewById(R.id.add_ocorrencia_morada)
+        coordenadas = findViewById(R.id.add_ocorrencia_coords)
         nomeUtilizador = findViewById(R.id.ocorrencia_username)
         data = findViewById(R.id.ocorrencia_data)
 
@@ -272,8 +271,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
 
     //OBTENÇÃO DO CAMINHO REAL NO DISPOSITIVO DA IMAGEM SELECIONADA
     fun getRealPathFromURI(context: Context, ac_Uri: Uri?): String {
-        var result = ""
-        var isok = false
+        val result: String
+        val isok: Boolean
         var cursor: Cursor? = null
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
@@ -309,12 +308,19 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                                 if (response.body()?.status == true) {
                                     Picasso.get().load(uri).into(imagem)
                                     urlImgSubmetida = response.body()!!.urlImagem
-                                } else {
-                                    Toast.makeText(
-                                            this@EditarRemoverOcorrencia,
-                                            response.body()?.MSG,
-                                            Toast.LENGTH_LONG
-                                    ).show()
+                                }
+                                else {
+                                    if(response.body()?.urlImagem != "") {
+                                        Picasso.get().load(uri).into(imagem)
+                                        urlImgSubmetida = response.body()!!.urlImagem
+                                    }
+                                    else {
+                                        Toast.makeText(
+                                                this@EditarRemoverOcorrencia,
+                                                response.body()?.MSG,
+                                                Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
                             }
                         }

@@ -23,6 +23,7 @@
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".ui.ocorrencia.VerificarOcorrencia" />
         <activity android:name=".ui.ocorrencia.EditarRemoverOcorrencia" />
+        <activity android:name=".ui.ocorrencia.AdicionarOcorrencia" />
         <activity android:name=".ui.registo.RegistoActivity" />
         <activity
             android:name=".SpashScreen"

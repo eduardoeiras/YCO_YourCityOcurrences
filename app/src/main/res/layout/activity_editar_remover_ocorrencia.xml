@@ -83,10 +83,10 @@
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_morada" />
+            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_morada" />
 
         <TextView
-            android:id="@+id/ocorrencia_coords"
+            android:id="@+id/add_ocorrencia_coords"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -129,7 +129,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_coords" />
+            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_coords" />
 
         <ImageButton
             android:id="@+id/voltar_ver_ocorrencia"
@@ -204,7 +204,7 @@
             app:layout_constraintTop_toBottomOf="@+id/titulo_detalhes_loc" />
 
         <TextView
-            android:id="@+id/ocorrencia_morada"
+            android:id="@+id/add_ocorrencia_morada"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
