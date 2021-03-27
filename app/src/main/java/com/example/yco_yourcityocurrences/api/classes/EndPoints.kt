@@ -51,4 +51,8 @@ interface EndPoints {
                         @Field("latitude") latitude: BigDecimal?, @Field("longitude") longitude: BigDecimal?,
                         @Field("nomeUtilizador") nomeUtilizador: String?
     ) : Call<Resposta>
+
+    //Endpoint para a remoção de uma ocorrência
+    @DELETE("ocorrencias/deleteOcorrencia/{id}")
+    fun removerOcorrencia(@Path("id") id: Int?) : Call<Resposta>
 }
