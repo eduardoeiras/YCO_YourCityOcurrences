@@ -1,6 +1,7 @@
 package com.example.yco_yourcityocurrences.ui.mapa
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,10 +18,12 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.example.yco_yourcityocurrences.R
+import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.api.classes.responses.RespostaTipo
 import com.example.yco_yourcityocurrences.ui.ocorrencia.AdicionarOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
@@ -53,6 +56,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var fabAdicionarOcorrencia: View
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
+
+    private lateinit var spinnerTipos: Spinner
 
     private var resetCamera = true
     private var reqCodeAdicionarOcorrencia = 1
@@ -99,7 +104,44 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
 
         botaoFiltros.setOnClickListener { _ ->
+            val dialogView = LayoutInflater.from(root.context).inflate(R.layout.filtros_dialog, null)
+            val mBuilder = AlertDialog.Builder(root.context)
+                    .setView(dialogView)
+            val mAlertDialog = mBuilder.show()
 
+            spinnerTipos = dialogView.findViewById(R.id.spinner_tipos)
+
+            val request = ServiceBuilder.buildService(EndPoints::class.java)
+            val call = request.getAllTiposOcorrencia()
+            call.enqueue(object : Callback<RespostaTipo> {
+                override fun onResponse(call: Call<RespostaTipo>, response: Response<RespostaTipo>) {
+                    if (response.isSuccessful) {
+                        if (response.body()?.status == true) {
+                            val adapter = SpinnerTiposAdaptor(root.context, response.body()!!.data)
+                                spinnerTipos.adapter = adapter
+                        } else {
+                            Toast.makeText(
+                                    this@MapaFragment.context,
+                                    response.body()?.MSG,
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<RespostaTipo>, t: Throwable) {
+                    Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            dialogView.findViewById<Button>(R.id.btn_filtrar_tipo).setOnClickListener {
+
+                //mAlertDialog.dismiss()
+            }
+
+            dialogView.findViewById<Button>(R.id.btn_filtrar_raio).setOnClickListener {
+
+                //mAlertDialog.dismiss()
+            }
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)

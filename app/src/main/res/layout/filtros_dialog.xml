@@ -8,9 +8,7 @@
         android:id="@+id/titulo_aviso"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:fontFamily="@font/ruda"
         android:text="@string/filtros_title"
         android:textColor="@color/black"
@@ -26,29 +24,32 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="@string/filtrar_tipo"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_tipos"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titulo_aviso" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_tipos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/label_tipo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/label_tipo"
         app:layout_constraintTop_toTopOf="@+id/label_tipo" />
 
     <Button
-        android:id="@+id/filtrar_tipo"
-        android:layout_width="0dp"
+        android:id="@+id/btn_filtrar_tipo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/btn_filtro_tipo"
-        app:layout_constraintEnd_toEndOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/label_tipo"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_tipos" />
 
     <TextView
         android:id="@+id/label_km_raio"
@@ -58,26 +59,29 @@
         android:layout_marginTop="24dp"
         android:labelFor="@+id/num_km"
         android:text="@string/filtrar_raio"
+        app:layout_constraintEnd_toStartOf="@+id/num_km"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filtrar_tipo" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_filtrar_tipo" />
 
     <EditText
         android:id="@+id/num_km"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/label_km_raio"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/label_km_raio"
         app:layout_constraintTop_toTopOf="@+id/label_km_raio" />
 
     <Button
         android:id="@+id/btn_filtrar_raio"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"

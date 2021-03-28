@@ -1,9 +1,6 @@
 package com.example.yco_yourcityocurrences.api.classes
 
-import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
-import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaImg
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.api.classes.responses.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -31,6 +28,10 @@ interface EndPoints {
     @GET("ocorrencias/getOcorrencia/{id}")
     fun getOcorrenciaPorId(@Path("id") id: Int?) : Call<RespostaOcorrencias>
 
+    @GET("ocorrencias/getOcorrenciasTipo/{tipo}")
+    fun getAllTiposOcorrencia(@Path("tipo") tipo: String) : Call<RespostaOcorrencias>
+
+
     //Endpoints de atualização das ocorrências
     @FormUrlEncoded
     @POST("ocorrencias/atualizarOcorrencia/{id}")
@@ -55,4 +56,8 @@ interface EndPoints {
     //Endpoint para a remoção de uma ocorrência
     @POST("ocorrencias/deleteOcorrencia/{id}")
     fun removerOcorrencia(@Path("id") id: Int?) : Call<Resposta>
+
+    //Endpoint para a obtenção dos tipos de ocorrências
+    @GET("ocorrencias/getAllTipos")
+    fun getAllTiposOcorrencia() : Call<RespostaTipo>
 }
