@@ -105,7 +105,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
         //FAB PARA ACICIONAR UMA OCORRENCIA, OBTENDO A LOCALIZAÇÃO ATUAL
         fabAdicionarOcorrencia.setOnClickListener { _ ->
-            Log.i("LOCATION", "Adicionar Ocorrência!")
             singleFusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
             createSingleLocationRequest()
             startSingleLocationRequest()
@@ -115,7 +114,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         singleLocationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
-                Log.i("LOCATION", "Location Callback!")
                 val intent = Intent(this@MapaFragment.context, AdicionarOcorrencia::class.java)
                 intent.putExtra("LAT", p0.lastLocation.latitude)
                 intent.putExtra("LNG", p0.lastLocation.longitude)
@@ -378,7 +376,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
     /*DEFINIÇÃO DO PEDIDO DE LOCALIZAÇÃO PARA QUE SEJA EXECUTADO UMA ÚNICA VEZ NO MOMENTO*/
     private fun createSingleLocationRequest() {
-        Log.i("LOCATION", "Create Location Request!")
         singleLocationRequest = LocationRequest.create()
         singleLocationRequest.numUpdates = 1
         singleLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
