@@ -110,11 +110,53 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         botaoPesqTitulo = root.findViewById(R.id.btn_pesq_titulo)
         pesqTituloCont = root.findViewById(R.id.search_content)
         botaoPesqTitulo.setOnClickListener { _ ->
-            if(!pesqTituloCont.text.isNotEmpty()) {
-
+            if(pesqTituloCont.text.isNotEmpty()) {
+                val request = ServiceBuilder.buildService(EndPoints::class.java)
+                val call = request.getAllOcorrenciasTitulo(pesqTituloCont.text.toString())
+                call.enqueue(object : Callback<RespostaOcorrencias> {
+                    override fun onResponse(call: Call<RespostaOcorrencias>, response: Response<RespostaOcorrencias>) {
+                        if (response.isSuccessful) {
+                            if (response.body()?.status == true) {
+                                gMap.clear()
+                                val ocorrencias: List<LinhaOcorrencia>? = response.body()?.data
+                                if (ocorrencias != null) {
+                                    for (linha in ocorrencias) {
+                                        val ocorrencia = linha.ocorrencia
+                                        val idOcorrencia = ocorrencia.id_ocorrencia
+                                        val lat = ocorrencia.latitude.toDouble()
+                                        val lng = ocorrencia.longitude.toDouble()
+                                        if(nomeUser == ocorrencia.nomeUtilizador) {
+                                            val obj: List<Int> = listOf(0, idOcorrencia)
+                                            val marker = gMap.addMarker(MarkerOptions()
+                                                    .position(LatLng(lat, lng)))
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                            marker.tag = obj
+                                        }
+                                        else {
+                                            val marker = gMap.addMarker(MarkerOptions()
+                                                    .position(LatLng(lat, lng)))
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                                            marker.tag = idOcorrencia
+                                        }
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(
+                                        this@MapaFragment.context,
+                                        response.body()?.MSG,
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+                    override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
+                        Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
-
-
+            else {
+                requestOcorrencias()
+            }
         }
 
 
