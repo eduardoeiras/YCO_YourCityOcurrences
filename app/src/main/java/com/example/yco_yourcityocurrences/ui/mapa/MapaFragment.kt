@@ -52,10 +52,13 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
+    private lateinit var singleFusedLocationClient: FusedLocationProviderClient
+    private lateinit var singleLocationRequest: LocationRequest
+    private lateinit var singleLocationCallback: LocationCallback
+
     private lateinit var fabAdicionarOcorrencia: View
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
-
 
     private lateinit var spinnerTipos: Spinner
     private lateinit var tipoSelecionado: String
@@ -87,6 +90,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                 _ -> resetCamera = true
         }
 
+        /*OBTENÇÃO DAS VIEWS DO LAYOUT E MOSTRAR OU ESCONDER O BOTÃO DE ADIÇÃO DE UMA OCORRÊNCIA*/
         fabAdicionarOcorrencia = root.findViewById(R.id.adicionarOcorrencia)
         layoutLabels = root.findViewById(R.id.constraint_layout_labels)
 
@@ -99,14 +103,28 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             fabAdicionarOcorrencia.visibility = View.INVISIBLE
         }
 
+        //FAB PARA ACICIONAR UMA OCORRENCIA, OBTENDO A LOCALIZAÇÃO ATUAL
         fabAdicionarOcorrencia.setOnClickListener { _ ->
-            val intent = Intent(this.context, AdicionarOcorrencia::class.java)
-            intent.putExtra("LAT", lastLocation.latitude)
-            intent.putExtra("LNG", lastLocation.longitude)
-            startActivityForResult(intent, reqCodeAdicionarOcorrencia)
+            Log.i("LOCATION", "Adicionar Ocorrência!")
+            singleFusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
+            createSingleLocationRequest()
+            startSingleLocationRequest()
         }
 
+        //CALLBACK PARA O RECEBIMENTO DA LOCALIZAÇÃO ATUAL APENAS UMA VEZ
+        singleLocationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                Log.i("LOCATION", "Location Callback!")
+                val intent = Intent(this@MapaFragment.context, AdicionarOcorrencia::class.java)
+                intent.putExtra("LAT", p0.lastLocation.latitude)
+                intent.putExtra("LNG", p0.lastLocation.longitude)
+                startActivityForResult(intent, reqCodeAdicionarOcorrencia)
+                singleFusedLocationClient.removeLocationUpdates(singleLocationCallback)
+            }
+        }
 
+        /*----- PROCEDIMENTOS DE FILTRAGEM DE OCORRÊNCIAS ---- */
         botaoPesqTitulo = root.findViewById(R.id.btn_pesq_titulo)
         pesqTituloCont = root.findViewById(R.id.search_content)
         botaoPesqTitulo.setOnClickListener { _ ->
@@ -158,7 +176,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                 requestOcorrencias()
             }
         }
-
 
         botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
         botaoFiltros.setOnClickListener { _ ->
@@ -300,6 +317,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
 
+        //CALLBACK PARA A OBTENÇÃO PERIÓDICA DA LOCALIZAÇÃO
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
@@ -345,6 +363,27 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
+    /*INICIAR A OBTENÇÃO DA LOCALIZAÇÃO APENAS UMA VEZ NO MOMENTO DE ADIÇÃO*/
+    private fun startSingleLocationRequest() {
+        if(ActivityCompat.checkSelfPermission( this.requireActivity(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this.requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_ACCESS_CODE)
+            return
+        }
+        singleFusedLocationClient.requestLocationUpdates(singleLocationRequest, singleLocationCallback, null)
+    }
+
+    /*DEFINIÇÃO DO PEDIDO DE LOCALIZAÇÃO PARA QUE SEJA EXECUTADO UMA ÚNICA VEZ NO MOMENTO*/
+    private fun createSingleLocationRequest() {
+        Log.i("LOCATION", "Create Location Request!")
+        singleLocationRequest = LocationRequest.create()
+        singleLocationRequest.numUpdates = 1
+        singleLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+
     /*DETERMINAÇÃO DO TIPO DE PONTO SELECIONADO NO MAPA, ENCAMINHANDO PARA A RESPETIVA ATIVIDADE*/
     override fun onMarkerClick(p0: Marker?): Boolean {
         val tag = p0?.tag
@@ -361,6 +400,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         return true
     }
 
+    /*ATUALIZAÇÃO DAS OCORRÊNCIAS NO MAPA PARA QUANDO É ADICIONADA OU REMOVIDA UMA OCORRÊNCIA*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == reqCodeAdicionarOcorrencia && resultCode == Activity.RESULT_OK) {
@@ -483,6 +523,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         private const val LOCATION_PERMISSION_ACCESS_CODE = 1
     }
 
+    /*OBTENÇÃO DO TIPO DE OCORRÊNCIA SELECIONADO NO SPINNER*/
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val text: String = parent?.getItemAtPosition(position).toString()
         tipoSelecionado = text
