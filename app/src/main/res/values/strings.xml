@@ -87,4 +87,6 @@
     <string name="filtrar_raio">Radius in Kilometers (km) :</string>
     <string name="btn_filtro_raio">Filter by Radius</string>
     <string name="obter_tipos_erro">It was not possible to obtain the types of occurrences for selection!</string>
+    <string name="erro_num_km">The number of kilometers can not be empty!</string>
+    <string name="erro_num_km_tpDados">The value inserted for the number of kilometers is not valid!</string>
 </resources>

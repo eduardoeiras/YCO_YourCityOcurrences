@@ -80,4 +80,7 @@
     <string name="btn_filtro_tipo">Filtrar Por Tipo</string>
     <string name="filtrar_raio">Raio em Quilómetros (km):</string>
     <string name="btn_filtro_raio">Filtrar Por Raio</string>
+    <string name="obter_tipos_erro">Não foi possível obter os tipos de ocorrências para seleção!</string>
+    <string name="erro_num_km">O número de quilómetros não pode ser vazio!</string>
+    <string name="erro_num_km_tpDados">O número de quilómetros inserido não é válido!</string>
 </resources>

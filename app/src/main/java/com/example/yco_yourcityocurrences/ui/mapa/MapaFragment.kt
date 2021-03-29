@@ -21,9 +21,7 @@ import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
-import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaTipo
+import com.example.yco_yourcityocurrences.api.classes.responses.*
 import com.example.yco_yourcityocurrences.ui.ocorrencia.AdicionarOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
@@ -40,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.math.BigDecimal
 
 class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener {
 
@@ -112,6 +111,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             val mAlertDialog = mBuilder.show()
 
             spinnerTipos = dialogView.findViewById(R.id.spinner_tipos)
+            numKm = dialogView.findViewById(R.id.num_km)
 
             val request = ServiceBuilder.buildService(EndPoints::class.java)
             val call = request.getAllTiposOcorrencia()
@@ -185,10 +185,63 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             }
 
             dialogView.findViewById<Button>(R.id.btn_filtrar_raio).setOnClickListener {
-
+                if(numKm.text.isNotEmpty()) {
+                    val numeroKm = numKm.text.toString().toFloatOrNull()
+                    if(numeroKm != null) {
+                        val requestRaio = ServiceBuilder.buildService(EndPoints::class.java)
+                        val callRaio = requestRaio.getAllOcorrenciasRaio(raio = numeroKm, lat = BigDecimal(lastLocation.latitude),
+                        long = BigDecimal(lastLocation.longitude))
+                        callRaio.enqueue(object : Callback<RespostaOcorrenciasRaio> {
+                            override fun onResponse(call: Call<RespostaOcorrenciasRaio>, response: Response<RespostaOcorrenciasRaio>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()?.status == true) {
+                                        gMap.clear()
+                                        val ocorrencias: List<Ocorrencia>? = response.body()?.data
+                                        if (ocorrencias != null) {
+                                            for (ocorrencia in ocorrencias) {
+                                                val idOcorrencia = ocorrencia.id_ocorrencia
+                                                val lat = ocorrencia.latitude.toDouble()
+                                                val lng = ocorrencia.longitude.toDouble()
+                                                if(nomeUser == ocorrencia.nomeUtilizador) {
+                                                    val obj: List<Int> = listOf(0, idOcorrencia)
+                                                    val marker = gMap.addMarker(MarkerOptions()
+                                                            .position(LatLng(lat, lng)))
+                                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                                    marker.tag = obj
+                                                }
+                                                else {
+                                                    val marker = gMap.addMarker(MarkerOptions()
+                                                            .position(LatLng(lat, lng)))
+                                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                                                    marker.tag = idOcorrencia
+                                                }
+                                            }
+                                            resetCamera = true
+                                            mAlertDialog.dismiss()
+                                        }
+                                    } else {
+                                        Toast.makeText(
+                                                this@MapaFragment.context,
+                                                response.body()?.MSG,
+                                                Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            }
+                            override fun onFailure(call: Call<RespostaOcorrenciasRaio>, t: Throwable) {
+                                Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
+                    else {
+                        Toast.makeText(this@MapaFragment.context, getString(R.string.erro_num_km_tpDados), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    Toast.makeText(this@MapaFragment.context, getString(R.string.erro_num_km), Toast.LENGTH_SHORT).show()
+                }
             }
         }
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
 
         locationCallback = object : LocationCallback() {

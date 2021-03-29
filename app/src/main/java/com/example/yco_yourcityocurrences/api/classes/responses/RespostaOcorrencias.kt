@@ -26,3 +26,9 @@ data class Ocorrencia(
 data class Utilizador(
         val nomeCompleto: String
 )
+
+data class RespostaOcorrenciasRaio (
+        val data: List<Ocorrencia>,
+        val status: Boolean,
+        val MSG: String
+)

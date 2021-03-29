@@ -30,7 +30,7 @@ interface EndPoints {
 
     //Endpoint de obtenção de todas as ocorrências num raio de x km da posição do utilizador
     @GET("ocorrencias/getInAreaOf")
-    fun getAllOcorrenciasRaio(@Query("raio") raio: Float, @Query("lat") lat: BigDecimal?, @Query("long") long: BigDecimal?) : Call<RespostaOcorrencias>
+    fun getAllOcorrenciasRaio(@Query("raio") raio: Float, @Query("lat") lat: BigDecimal?, @Query("long") long: BigDecimal?) : Call<RespostaOcorrenciasRaio>
 
     //Endponint de obtenção das ocorrências de um tipo selecionado pelo utilizador
     @GET("ocorrencias/getOcorrenciasTipo/{tipo}")
