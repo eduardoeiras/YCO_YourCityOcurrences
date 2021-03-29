@@ -28,8 +28,13 @@ interface EndPoints {
     @GET("ocorrencias/getAll")
     fun getAllOcorrencias() : Call<List<LinhaOcorrencia>>
 
+    //Endponint de obtenção das ocorrências de um tipo selecionado pelo utilizador
     @GET("ocorrencias/getOcorrencia/{id}")
     fun getOcorrenciaPorId(@Path("id") id: Int?) : Call<RespostaOcorrencias>
+
+    //Endpoint de obtenção de todas as ocorrências num raio de x km da posição do utilizador
+    @GET("ocorrencias/getInAreaOf")
+    fun getAllOcorrenciasRaio(@Query("raio") raio: Float, @Query("lat") lat: BigDecimal?, @Query("long") long: BigDecimal?) : Call<RespostaOcorrencias>
 
     //Endpoints de atualização das ocorrências
     @FormUrlEncoded

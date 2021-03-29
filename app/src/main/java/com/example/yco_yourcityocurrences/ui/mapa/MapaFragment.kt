@@ -53,6 +53,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var fabAdicionarOcorrencia: View
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
+    private lateinit var numKm: EditText
 
     private var resetCamera = true
     private var reqCodeAdicionarOcorrencia = 1
