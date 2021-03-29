@@ -55,10 +55,14 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private lateinit var fabAdicionarOcorrencia: View
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
-    private lateinit var numKm: EditText
+
 
     private lateinit var spinnerTipos: Spinner
     private lateinit var tipoSelecionado: String
+    private lateinit var numKm: EditText
+
+    private lateinit var botaoPesqTitulo: ImageButton
+    private lateinit var pesqTituloCont: EditText
 
     private var resetCamera = true
     private var reqCodeAdicionarOcorrencia = 1
@@ -102,8 +106,19 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             startActivityForResult(intent, reqCodeAdicionarOcorrencia)
         }
 
-        botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
 
+        botaoPesqTitulo = root.findViewById(R.id.btn_pesq_titulo)
+        pesqTituloCont = root.findViewById(R.id.search_content)
+        botaoPesqTitulo.setOnClickListener { _ ->
+            if(!pesqTituloCont.text.isNotEmpty()) {
+
+            }
+
+
+        }
+
+
+        botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
         botaoFiltros.setOnClickListener { _ ->
             val dialogView = LayoutInflater.from(root.context).inflate(R.layout.filtros_dialog, null)
             val mBuilder = AlertDialog.Builder(root.context)
@@ -165,7 +180,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                             marker.tag = idOcorrencia
                                         }
                                     }
-                                    resetCamera = true
                                     mAlertDialog.dismiss()
                                 }
                             } else {
@@ -216,7 +230,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                                     marker.tag = idOcorrencia
                                                 }
                                             }
-                                            resetCamera = true
                                             mAlertDialog.dismiss()
                                         }
                                     } else {
@@ -242,6 +255,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                 }
             }
         }
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
 
         locationCallback = object : LocationCallback() {
