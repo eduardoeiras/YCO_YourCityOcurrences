@@ -1,6 +1,7 @@
 package com.example.yco_yourcityocurrences.ui.mapa
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -17,10 +18,12 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.example.yco_yourcityocurrences.R
+import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
 import com.example.yco_yourcityocurrences.api.classes.responses.LinhaOcorrencia
 import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.api.classes.responses.RespostaTipo
 import com.example.yco_yourcityocurrences.ui.ocorrencia.AdicionarOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
@@ -38,7 +41,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
+class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var nomeUser: String
@@ -54,6 +57,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
     private lateinit var numKm: EditText
+
+    private lateinit var spinnerTipos: Spinner
+    private lateinit var tipoSelecionado: String
 
     private var resetCamera = true
     private var reqCodeAdicionarOcorrencia = 1
@@ -100,7 +106,87 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         botaoFiltros = root.findViewById(R.id.botao_filtrar_tipo)
 
         botaoFiltros.setOnClickListener { _ ->
+            val dialogView = LayoutInflater.from(root.context).inflate(R.layout.filtros_dialog, null)
+            val mBuilder = AlertDialog.Builder(root.context)
+                    .setView(dialogView)
+            val mAlertDialog = mBuilder.show()
 
+            spinnerTipos = dialogView.findViewById(R.id.spinner_tipos)
+
+            val request = ServiceBuilder.buildService(EndPoints::class.java)
+            val call = request.getAllTiposOcorrencia()
+            call.enqueue(object : Callback<RespostaTipo> {
+                override fun onResponse(call: Call<RespostaTipo>, response: Response<RespostaTipo>) {
+                    if (response.isSuccessful) {
+                        if (response.body()?.status == true) {
+                            val adapter = SpinnerTiposAdaptor(root.context, response.body()!!.data)
+                                spinnerTipos.adapter = adapter
+                                spinnerTipos.onItemSelectedListener = this@MapaFragment
+                        } else {
+                            Toast.makeText(
+                                    this@MapaFragment.context,
+                                    response.body()?.MSG,
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<RespostaTipo>, t: Throwable) {
+                    Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            dialogView.findViewById<Button>(R.id.btn_filtrar_tipo).setOnClickListener {
+                val requestTipos = ServiceBuilder.buildService(EndPoints::class.java)
+                val callTipos = requestTipos.getAllOcorrenciasTipo(tipo = tipoSelecionado)
+                callTipos.enqueue(object : Callback<RespostaOcorrencias> {
+                    override fun onResponse(call: Call<RespostaOcorrencias>, response: Response<RespostaOcorrencias>) {
+                        if (response.isSuccessful) {
+                            if (response.body()?.status == true) {
+                                gMap.clear()
+                                val ocorrencias: List<LinhaOcorrencia>? = response.body()?.data
+                                if (ocorrencias != null) {
+                                    for (linha in ocorrencias) {
+                                        val ocorrencia = linha.ocorrencia
+                                        val idOcorrencia = ocorrencia.id_ocorrencia
+                                        val lat = ocorrencia.latitude.toDouble()
+                                        val lng = ocorrencia.longitude.toDouble()
+                                        if(nomeUser == ocorrencia.nomeUtilizador) {
+                                            val obj: List<Int> = listOf(0, idOcorrencia)
+                                            val marker = gMap.addMarker(MarkerOptions()
+                                                    .position(LatLng(lat, lng)))
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                            marker.tag = obj
+                                        }
+                                        else {
+                                            val marker = gMap.addMarker(MarkerOptions()
+                                                    .position(LatLng(lat, lng)))
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                                            marker.tag = idOcorrencia
+                                        }
+                                    }
+                                    resetCamera = true
+                                    mAlertDialog.dismiss()
+                                }
+                            } else {
+                                Toast.makeText(
+                                        this@MapaFragment.context,
+                                        response.body()?.MSG,
+                                        Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+                    override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
+                        Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+
+            }
+
+            dialogView.findViewById<Button>(R.id.btn_filtrar_raio).setOnClickListener {
+
+            }
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
@@ -286,5 +372,14 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
     companion object {
         private const val LOCATION_PERMISSION_ACCESS_CODE = 1
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val text: String = parent?.getItemAtPosition(position).toString()
+        tipoSelecionado = text
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Toast.makeText(this@MapaFragment.context, getString(R.string.obter_tipos_erro), Toast.LENGTH_LONG).show()
     }
 }

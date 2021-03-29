@@ -86,4 +86,5 @@
     <string name="btn_filtro_tipo">Filter By Type</string>
     <string name="filtrar_raio">Radius in Kilometers (km) :</string>
     <string name="btn_filtro_raio">Filter by Radius</string>
+    <string name="obter_tipos_erro">It was not possible to obtain the types of occurrences for selection!</string>
 </resources>
