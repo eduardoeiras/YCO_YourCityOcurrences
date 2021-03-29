@@ -29,7 +29,7 @@ interface EndPoints {
     fun getOcorrenciaPorId(@Path("id") id: Int?) : Call<RespostaOcorrencias>
 
     @GET("ocorrencias/getOcorrenciasTipo/{tipo}")
-    fun getAllTiposOcorrencia(@Path("tipo") tipo: String) : Call<RespostaOcorrencias>
+    fun getAllOcorrenciasTipo(@Path("tipo") tipo: String) : Call<RespostaOcorrencias>
 
 
     //Endpoints de atualização das ocorrências
