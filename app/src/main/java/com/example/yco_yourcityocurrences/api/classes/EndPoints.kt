@@ -31,7 +31,6 @@ interface EndPoints {
     @GET("ocorrencias/getOcorrenciasTipo/{tipo}")
     fun getAllOcorrenciasTipo(@Path("tipo") tipo: String) : Call<RespostaOcorrencias>
 
-
     //Endpoints de atualização das ocorrências
     @FormUrlEncoded
     @POST("ocorrencias/atualizarOcorrencia/{id}")
