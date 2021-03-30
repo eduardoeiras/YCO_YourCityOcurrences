@@ -5,10 +5,13 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +20,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.example.yco_yourcityocurrences.R
 import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
@@ -26,7 +30,6 @@ import com.example.yco_yourcityocurrences.ui.ocorrencia.AdicionarOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.EditarRemoverOcorrencia
 import com.example.yco_yourcityocurrences.ui.ocorrencia.VerificarOcorrencia
 import com.google.android.gms.location.*
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -40,13 +43,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
 
-class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener {
+class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener,
+ SensorEventListener {
 
+    //VARIÁVEIS RELACIONADAS COM SHARED PREFERENCES
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var nomeUser: String
 
+    //MAPA
     private lateinit var gMap: GoogleMap
 
+    //VARIÁVIES REFERENTES AOS PEDIDOS DE LOCALIZAÇÃO
     private lateinit var lastLocation: Location
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -56,6 +63,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private lateinit var singleLocationRequest: LocationRequest
     private lateinit var singleLocationCallback: LocationCallback
 
+    //VARIÁVEIS REFERENTES A VIEWS PARA ADICIONAR E FILTRAR OCORRENCIAS
     private lateinit var fabAdicionarOcorrencia: View
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
@@ -67,9 +75,30 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private lateinit var botaoPesqTitulo: ImageButton
     private lateinit var pesqTituloCont: EditText
 
+    //VARIÁVEIS PARA RECENTRAR A CÂMERA, REALIZAR A ADIÇÃO,
+    // OU EDIÇÃO OU REMOÇÃO DE UMA OCORRÊNCIA
     private var resetCamera = true
-    private var reqCodeAdicionarOcorrencia = 1
-    private var reqCodeEditarRemoverOcorrencia = 2
+    private val reqCodeAdicionarOcorrencia = 1
+    private val reqCodeEditarRemoverOcorrencia = 2
+
+    //VARIÁVIES RELACIONADAS COM O SENSOR DE MOVIMENTO
+    private lateinit var mSensorManager: SensorManager
+    private lateinit var mSensorAccelerometer: Sensor
+    private lateinit var mSensorMagnetometer: Sensor
+
+    private var mAccelerometerData = FloatArray(3)
+    private var mMagnetometerData = FloatArray(3)
+
+    private var azimuth: Float = 0.0f
+    private var pitch: Float = 0.0f
+    private var roll: Float = 0.0f
+
+    private lateinit var azimuthView: TextView
+    private lateinit var pitchView: TextView
+    private lateinit var rollView: TextView
+
+
+    private val VALUE_DRIFT = 0.05f
 
     private val callback = OnMapReadyCallback { googleMap ->
         gMap = googleMap
@@ -78,16 +107,15 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_mapa, container, false)
         sharedPreferences = this.requireActivity().getSharedPreferences(getString(R.string.user_creds_file_key), Context.MODE_PRIVATE)
         nomeUser = sharedPreferences.getString(getString(R.string.username), "").toString()
 
-        root.findViewById<ImageButton>(R.id.reset_location).setOnClickListener {
-                _ -> resetCamera = true
+        root.findViewById<ImageButton>(R.id.reset_location).setOnClickListener { _ -> resetCamera = true
         }
 
         /*OBTENÇÃO DAS VIEWS DO LAYOUT E MOSTRAR OU ESCONDER O BOTÃO DE ADIÇÃO DE UMA OCORRÊNCIA*/
@@ -141,14 +169,13 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                         val idOcorrencia = ocorrencia.id_ocorrencia
                                         val lat = ocorrencia.latitude.toDouble()
                                         val lng = ocorrencia.longitude.toDouble()
-                                        if(nomeUser == ocorrencia.nomeUtilizador) {
+                                        if (nomeUser == ocorrencia.nomeUtilizador) {
                                             val obj: List<Int> = listOf(0, idOcorrencia)
                                             val marker = gMap.addMarker(MarkerOptions()
                                                     .position(LatLng(lat, lng)))
                                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                             marker.tag = obj
-                                        }
-                                        else {
+                                        } else {
                                             val marker = gMap.addMarker(MarkerOptions()
                                                     .position(LatLng(lat, lng)))
                                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -165,6 +192,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                             }
                         }
                     }
+
                     override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
                         Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                     }
@@ -192,8 +220,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                     if (response.isSuccessful) {
                         if (response.body()?.status == true) {
                             val adapter = SpinnerTiposAdaptor(root.context, response.body()!!.data)
-                                spinnerTipos.adapter = adapter
-                                spinnerTipos.onItemSelectedListener = this@MapaFragment
+                            spinnerTipos.adapter = adapter
+                            spinnerTipos.onItemSelectedListener = this@MapaFragment
                         } else {
                             Toast.makeText(
                                     this@MapaFragment.context,
@@ -203,6 +231,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<RespostaTipo>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -223,14 +252,13 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                         val idOcorrencia = ocorrencia.id_ocorrencia
                                         val lat = ocorrencia.latitude.toDouble()
                                         val lng = ocorrencia.longitude.toDouble()
-                                        if(nomeUser == ocorrencia.nomeUtilizador) {
+                                        if (nomeUser == ocorrencia.nomeUtilizador) {
                                             val obj: List<Int> = listOf(0, idOcorrencia)
                                             val marker = gMap.addMarker(MarkerOptions()
                                                     .position(LatLng(lat, lng)))
                                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                             marker.tag = obj
-                                        }
-                                        else {
+                                        } else {
                                             val marker = gMap.addMarker(MarkerOptions()
                                                     .position(LatLng(lat, lng)))
                                             marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -248,6 +276,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                             }
                         }
                     }
+
                     override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
                         Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                     }
@@ -261,7 +290,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                     if(numeroKm != null) {
                         val requestRaio = ServiceBuilder.buildService(EndPoints::class.java)
                         val callRaio = requestRaio.getAllOcorrenciasRaio(raio = numeroKm, lat = BigDecimal(lastLocation.latitude),
-                        long = BigDecimal(lastLocation.longitude))
+                                long = BigDecimal(lastLocation.longitude))
                         callRaio.enqueue(object : Callback<RespostaOcorrenciasRaio> {
                             override fun onResponse(call: Call<RespostaOcorrenciasRaio>, response: Response<RespostaOcorrenciasRaio>) {
                                 if (response.isSuccessful) {
@@ -273,14 +302,13 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                                 val idOcorrencia = ocorrencia.id_ocorrencia
                                                 val lat = ocorrencia.latitude.toDouble()
                                                 val lng = ocorrencia.longitude.toDouble()
-                                                if(nomeUser == ocorrencia.nomeUtilizador) {
+                                                if (nomeUser == ocorrencia.nomeUtilizador) {
                                                     val obj: List<Int> = listOf(0, idOcorrencia)
                                                     val marker = gMap.addMarker(MarkerOptions()
                                                             .position(LatLng(lat, lng)))
                                                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                                     marker.tag = obj
-                                                }
-                                                else {
+                                                } else {
                                                     val marker = gMap.addMarker(MarkerOptions()
                                                             .position(LatLng(lat, lng)))
                                                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -298,6 +326,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                     }
                                 }
                             }
+
                             override fun onFailure(call: Call<RespostaOcorrenciasRaio>, t: Throwable) {
                                 Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                             }
@@ -330,6 +359,19 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
         createLocationRequest()
 
+        //PROCEDIMENTOS RELACIONADOS COM O SENSOR DE MOVIMENTO
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        mSensorAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        mSensorMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+        //LAYOUT PARA VERIFICAÇÃO DOS DADOS OBTIDOS, REMOVER DEPOIS
+        azimuthView = root.findViewById(R.id.azimuth)
+        pitchView = root.findViewById(R.id.pitch)
+        rollView = root.findViewById(R.id.roll_value)
+
+
         return root
     }
 
@@ -342,12 +384,12 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
     /*INICIAR A OBTENÇÃO E ATUALIZAÇÃO DA LOCALIZAÇÃO*/
     private fun startLocationUpdates() {
-        if(ActivityCompat.checkSelfPermission( this.requireActivity(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if(ActivityCompat.checkSelfPermission(this.requireActivity(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this.requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_ACCESS_CODE)
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_ACCESS_CODE)
             return
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
@@ -363,7 +405,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
     /*INICIAR A OBTENÇÃO DA LOCALIZAÇÃO APENAS UMA VEZ NO MOMENTO DE ADIÇÃO*/
     private fun startSingleLocationRequest() {
-        if(ActivityCompat.checkSelfPermission( this.requireActivity(),
+        if(ActivityCompat.checkSelfPermission(this.requireActivity(),
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this.requireActivity(),
@@ -409,7 +451,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     }
 
     /*FUNÇÃO DE OBTENÇÃO DAS OCORRÊNCIAS, LIMPANDO O MAPA*/
-    fun requestOcorrencias() {
+    private fun requestOcorrencias() {
         gMap.clear()
         val request = ServiceBuilder.buildService(EndPoints::class.java)
         if(nomeUser != "") {
@@ -441,6 +483,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -472,6 +515,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -497,11 +541,33 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<List<LinhaOcorrencia>>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
         }
+    }
+
+    /*OBTENÇÃO DO TIPO DE OCORRÊNCIA SELECIONADO NO SPINNER*/
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val text: String = parent?.getItemAtPosition(position).toString()
+        tipoSelecionado = text
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Toast.makeText(this@MapaFragment.context, getString(R.string.obter_tipos_erro), Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mSensorManager.registerListener(this, mSensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL)
+        mSensorManager.registerListener(this, mSensorMagnetometer, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mSensorManager.unregisterListener(this)
     }
 
     /*PARAR OS PEDIDOS DE LOCALIZAÇÃO QUANDO A ATIVIDADE ENTRAR EM PAUSA*/
@@ -515,18 +581,41 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         super.onResume()
         startLocationUpdates()
     }
+    /*MÉTODOS RELATIVOS À OBTENÇÃO DA INFORMAÇÃO DE SENSORES*/
+    override fun onSensorChanged(event: SensorEvent?) {
+        val sensorType = event?.sensor?.type
+        when(sensorType) {
+            Sensor.TYPE_ACCELEROMETER -> {
+                mAccelerometerData = event.values.clone()
+            }
+            Sensor.TYPE_MAGNETIC_FIELD -> {
+                mMagnetometerData = event.values.clone()
+            }
+            else -> return
+        }
+
+        val rotationMatrix = FloatArray(9)
+        val rotationOk: Boolean = SensorManager.getRotationMatrix(rotationMatrix,
+        null, mAccelerometerData, mMagnetometerData)
+        val orientationValues = FloatArray(3)
+        if (rotationOk) {
+            SensorManager.getOrientation(rotationMatrix, orientationValues)
+        }
+        azimuth = orientationValues[0]
+        pitch = orientationValues[1]
+        roll = orientationValues[2]
+
+        //REMOVER ESTA PARTE EM BAIXO
+        azimuthView.text = resources.getString(R.string.value_format, azimuth)
+        pitchView.text = resources.getString(R.string.value_format, pitch)
+        rollView.text = resources.getString(R.string.value_format, roll)
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+
+    }
 
     companion object {
-        private const val LOCATION_PERMISSION_ACCESS_CODE = 1
-    }
-
-    /*OBTENÇÃO DO TIPO DE OCORRÊNCIA SELECIONADO NO SPINNER*/
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val text: String = parent?.getItemAtPosition(position).toString()
-        tipoSelecionado = text
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        Toast.makeText(this@MapaFragment.context, getString(R.string.obter_tipos_erro), Toast.LENGTH_LONG).show()
+        internal const val LOCATION_PERMISSION_ACCESS_CODE = 1
     }
 }

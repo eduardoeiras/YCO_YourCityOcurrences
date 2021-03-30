@@ -146,7 +146,7 @@
             android:contentDescription="@string/img_green_marker_cd" />
 
         <TextView
-            android:id="@+id/text_label_marker_green"
+            android:id="@+id/label_green_marker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -158,7 +158,7 @@
             app:layout_constraintTop_toTopOf="@+id/img_green_marker" />
 
         <TextView
-            android:id="@+id/text_label_marker_red"
+            android:id="@+id/label_red_marker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
