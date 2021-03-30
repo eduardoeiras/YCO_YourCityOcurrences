@@ -52,6 +52,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
     //MAPA
     private lateinit var gMap: GoogleMap
+    private var posicaoUserMarker: Marker? = null
 
     //VARIÁVIES REFERENTES AOS PEDIDOS DE LOCALIZAÇÃO
     private lateinit var lastLocation: Location
@@ -348,8 +349,19 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
+                lastLocation = p0.lastLocation
+                if(posicaoUserMarker != null) {
+                    posicaoUserMarker!!.position = LatLng(lastLocation.latitude, lastLocation.longitude)
+                }
+                else {
+                    posicaoUserMarker = gMap.addMarker(MarkerOptions()
+                            .position(LatLng(lastLocation.latitude, lastLocation.longitude))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
+                            .anchor(0.5f, 0.5f)
+                            .flat(true))
+                    posicaoUserMarker!!.tag = ""
+                }
                 if(resetCamera) {
-                    lastLocation = p0.lastLocation
                     val loc = LatLng(lastLocation.latitude, lastLocation.longitude)
                     gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.0f))
                     resetCamera = false
@@ -431,7 +443,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             intent.putExtra("ID_OCORRENCIA", tag[1].toString())
             startActivityForResult(intent, reqCodeEditarRemoverOcorrencia)
         }
-        else {
+        if(tag is Int) {
             val intent = Intent(this.context, VerificarOcorrencia::class.java)
             intent.putExtra("ID_OCORRENCIA", tag.toString())
             startActivity(intent)
@@ -596,7 +608,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
         val rotationMatrix = FloatArray(9)
         val rotationOk: Boolean = SensorManager.getRotationMatrix(rotationMatrix,
-        null, mAccelerometerData, mMagnetometerData)
+                null, mAccelerometerData, mMagnetometerData)
         val orientationValues = FloatArray(3)
         if (rotationOk) {
             SensorManager.getOrientation(rotationMatrix, orientationValues)
@@ -609,6 +621,10 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         azimuthView.text = resources.getString(R.string.value_format, azimuth)
         pitchView.text = resources.getString(R.string.value_format, pitch)
         rollView.text = resources.getString(R.string.value_format, roll)
+
+        if (posicaoUserMarker != null) {
+            posicaoUserMarker!!.setRotation(azimuth)
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
