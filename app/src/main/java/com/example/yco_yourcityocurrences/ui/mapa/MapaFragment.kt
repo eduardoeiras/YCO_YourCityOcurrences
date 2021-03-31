@@ -94,11 +94,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private var pitch: Float = 0.0f
     private var roll: Float = 0.0f
 
-    private lateinit var azimuthView: TextView
-    private lateinit var pitchView: TextView
-    private lateinit var rollView: TextView
-
-
     private val VALUE_DRIFT = 0.05f
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -378,12 +373,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         mSensorAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mSensorMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
-        //LAYOUT PARA VERIFICAÇÃO DOS DADOS OBTIDOS, REMOVER DEPOIS
-        azimuthView = root.findViewById(R.id.azimuth)
-        pitchView = root.findViewById(R.id.pitch)
-        rollView = root.findViewById(R.id.roll_value)
-
-
         return root
     }
 
@@ -617,13 +606,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         pitch = orientationValues[1]
         roll = orientationValues[2]
 
-        //REMOVER ESTA PARTE EM BAIXO
-        azimuthView.text = resources.getString(R.string.value_format, azimuth)
-        pitchView.text = resources.getString(R.string.value_format, pitch)
-        rollView.text = resources.getString(R.string.value_format, roll)
-
         if (posicaoUserMarker != null) {
-            posicaoUserMarker!!.setRotation(azimuth)
+            posicaoUserMarker!!.setRotation(azimuth * 57.2957795f)
         }
     }
 
