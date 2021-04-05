@@ -205,11 +205,6 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                     }
                 })
             }
-            else {
-                val replyIntent = Intent()
-                setResult(Activity.RESULT_CANCELED, replyIntent)
-                finish()
-            }
         }
     }
 
