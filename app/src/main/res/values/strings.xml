@@ -55,7 +55,7 @@
     <string name="layout_mapa_title">Ocurrences Map</string>
     <string name="botao_pesquisar">Search occurrence button.</string>
     <string name="er_ocurrence_title_hint">Occurrence Title</string>
-    <string name="er_ocurrence_desc_hint">Description</string>
+    <string name="er_ocurrence_desc_hint"> Description</string>
     <string name="botao_delete_ocorrencia">Give as resolved</string>
     <string name="er_ocurrence_tipo_hint">Occurrence Type</string>
     <string name="ocurrence_type_title">Occurrence Type:</string>
