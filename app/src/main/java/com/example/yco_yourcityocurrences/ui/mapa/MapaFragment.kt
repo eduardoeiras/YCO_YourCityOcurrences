@@ -349,12 +349,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                     posicaoUserMarker!!.position = LatLng(lastLocation.latitude, lastLocation.longitude)
                 }
                 else {
-                    posicaoUserMarker = gMap.addMarker(MarkerOptions()
-                            .position(LatLng(lastLocation.latitude, lastLocation.longitude))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
-                            .anchor(0.5f, 0.5f)
-                            .flat(true))
-                    posicaoUserMarker!!.tag = ""
+                    createUserMarker()
                 }
                 if(resetCamera) {
                     val loc = LatLng(lastLocation.latitude, lastLocation.longitude)
@@ -557,6 +552,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+        if(this::lastLocation.isInitialized) {
+            createUserMarker()
         }
     }
 
