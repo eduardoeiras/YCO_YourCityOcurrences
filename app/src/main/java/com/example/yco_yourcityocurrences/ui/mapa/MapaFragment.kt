@@ -376,6 +376,16 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         return root
     }
 
+    /* CRIAR O MARCADOR DO UTILIZADOR NO MAPA */
+    private fun createUserMarker() {
+        posicaoUserMarker = gMap.addMarker(MarkerOptions()
+            .position(LatLng(lastLocation.latitude, lastLocation.longitude))
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
+            .anchor(0.5f, 0.5f)
+            .flat(true))
+        posicaoUserMarker!!.tag = ""
+    }
+
     /*OBTER O MAPA QUANDO A VIEW ESTIVER CRIADA*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
