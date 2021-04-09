@@ -100,6 +100,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         gMap = googleMap
         requestOcorrencias()
         googleMap.setOnMarkerClickListener(this)
+        googleMap.setOnCameraMoveListener {
+            resetCamera = false
+        }
     }
 
     override fun onCreateView(
@@ -138,11 +141,11 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         singleLocationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
+                singleFusedLocationClient.removeLocationUpdates(singleLocationCallback)
                 val intent = Intent(this@MapaFragment.context, AdicionarOcorrencia::class.java)
                 intent.putExtra("LAT", p0.lastLocation.latitude)
                 intent.putExtra("LNG", p0.lastLocation.longitude)
                 startActivityForResult(intent, reqCodeAdicionarOcorrencia)
-                singleFusedLocationClient.removeLocationUpdates(singleLocationCallback)
             }
         }
 
@@ -178,6 +181,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                             marker.tag = idOcorrencia
                                         }
                                     }
+                                }
+                                if(this@MapaFragment::lastLocation.isInitialized) {
+                                    createUserMarker()
                                 }
                             } else {
                                 Toast.makeText(
@@ -263,6 +269,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                     }
                                     mAlertDialog.dismiss()
                                 }
+                                if(this@MapaFragment::lastLocation.isInitialized) {
+                                    createUserMarker()
+                                }
                             } else {
                                 Toast.makeText(
                                         this@MapaFragment.context,
@@ -312,6 +321,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                                 }
                                             }
                                             mAlertDialog.dismiss()
+                                        }
+                                        if(this@MapaFragment::lastLocation.isInitialized) {
+                                            createUserMarker()
                                         }
                                     } else {
                                         Toast.makeText(
@@ -404,7 +416,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     /*DEFINIÇÃO DO PEDIDO DE LOCALIZAÇÃO*/
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create()
-
         locationRequest.interval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
@@ -422,10 +433,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         singleFusedLocationClient.requestLocationUpdates(singleLocationRequest, singleLocationCallback, null)
     }
 
-    /*DEFINIÇÃO DO PEDIDO DE LOCALIZAÇÃO PARA QUE SEJA EXECUTADO UMA ÚNICA VEZ NO MOMENTO*/
+    /*DEFINIÇÃO DO PEDIDO DE LOCALIZAÇÃO PARA QUE SEJA EXECUTADO NO MOMENTO*/
     private fun createSingleLocationRequest() {
         singleLocationRequest = LocationRequest.create()
-        singleLocationRequest.numUpdates = 1
         singleLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
