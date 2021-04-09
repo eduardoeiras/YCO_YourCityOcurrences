@@ -121,6 +121,11 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         return root
     }
 
+    /* CRIAR O MARCADOR DO UTILIZADOR NO MAPA */
+    private fun createUserMarker() {
+
+    }
+
     /*OBTER O MAPA QUANDO A VIEW ESTIVER CRIADA*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

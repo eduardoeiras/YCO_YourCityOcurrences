@@ -156,10 +156,6 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
         }
 
         if(titulo.text.toString() == ocorrenciaOriginal.titulo && descricao.text.toString() == ocorrenciaOriginal.descricao
-                && tipo.text.toString() == ocorrenciaOriginal.tipo && urlImgSubmetida == "") {
-            guardar = false
-        }
-        if(titulo.text.toString() == ocorrenciaOriginal.titulo && descricao.text.toString() == ocorrenciaOriginal.descricao
                 && tipo.text.toString() == ocorrenciaOriginal.tipo && urlImgSubmetida != "") {
             guardar = true
         }
@@ -167,43 +163,59 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
         return guardar
     }
 
+    private fun verificaAlteracoes() : Boolean {
+        var existemAlteracoes: Boolean
+
+        existemAlteracoes = !(titulo.text.toString() == ocorrenciaOriginal.titulo && descricao.text.toString() == ocorrenciaOriginal.descricao
+                && tipo.text.toString() == ocorrenciaOriginal.tipo && urlImgSubmetida == "")
+
+        return existemAlteracoes
+    }
+
     fun voltar(view: View) {
         if(view is ImageButton) {
-            if(verificarCampos()) {
-                val request = ServiceBuilder.buildService(EndPoints::class.java)
-                val call: Call<Resposta> = if(urlImgSubmetida != "") {
-                    request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
+            if(verificaAlteracoes()) {
+                if(verificarCampos()) {
+                    val request = ServiceBuilder.buildService(EndPoints::class.java)
+                    val call: Call<Resposta> = if(urlImgSubmetida != "") {
+                        request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
                             desc = descricao.text.toString(), tipo = tipo.text.toString(), imagem = urlImgSubmetida)
-                } else {
-                    request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
+                    } else {
+                        request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
                             desc = descricao.text.toString(), tipo = tipo.text.toString(), imagem = ocorrenciaOriginal.imagem)
-                }
-                call.enqueue(object : Callback<Resposta> {
-                    override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
-                        if (response.isSuccessful) {
-                            if (response.body()?.status == true) {
-                                Toast.makeText(
+                    }
+                    call.enqueue(object : Callback<Resposta> {
+                        override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
+                            if (response.isSuccessful) {
+                                if (response.body()?.status == true) {
+                                    Toast.makeText(
                                         this@EditarRemoverOcorrencia,
                                         getString(R.string.ocorrencia_atualizada),
                                         Toast.LENGTH_LONG
-                                ).show()
-                                val replyIntent = Intent()
-                                setResult(RESULT_EDIT, replyIntent)
-                                finish()
-                            } else {
-                                Toast.makeText(
+                                    ).show()
+                                    val replyIntent = Intent()
+                                    setResult(RESULT_EDIT, replyIntent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(
                                         this@EditarRemoverOcorrencia,
                                         response.body()?.MSG,
                                         Toast.LENGTH_LONG
-                                ).show()
+                                    ).show()
+                                }
                             }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Resposta>, t: Throwable) {
-                        Toast.makeText(this@EditarRemoverOcorrencia, t.message, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                        override fun onFailure(call: Call<Resposta>, t: Throwable) {
+                            Toast.makeText(this@EditarRemoverOcorrencia, t.message, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+            }
+            else {
+                val replyIntent = Intent()
+                setResult(RESULT_CANCELED, replyIntent)
+                finish()
             }
         }
     }
