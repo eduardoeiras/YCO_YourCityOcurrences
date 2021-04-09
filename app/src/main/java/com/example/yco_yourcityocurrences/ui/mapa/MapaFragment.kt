@@ -123,7 +123,12 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
     /* CRIAR O MARCADOR DO UTILIZADOR NO MAPA */
     private fun createUserMarker() {
-
+        posicaoUserMarker = gMap.addMarker(MarkerOptions()
+            .position(LatLng(lastLocation.latitude, lastLocation.longitude))
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
+            .anchor(0.5f, 0.5f)
+            .flat(true))
+        posicaoUserMarker!!.tag = ""
     }
 
     /*OBTER O MAPA QUANDO A VIEW ESTIVER CRIADA*/
