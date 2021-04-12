@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                             ).show()
                             with(sharedPreferences.edit()) {
                                 putString(getString(R.string.username), nomeUser)
-                                putString(getString(R.string.password), pwd)
+                                putBoolean(getString(R.string.log_in_done), true)
                                 commit()
                             }
                             val intent = Intent(this@LoginFragment.context, ActivityLoginRealizado::class.java)

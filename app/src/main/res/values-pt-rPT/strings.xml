@@ -83,4 +83,5 @@
     <string name="obter_tipos_erro">Não foi possível obter os tipos de ocorrências para seleção!</string>
     <string name="erro_num_km">O número de quilómetros não pode ser vazio!</string>
     <string name="erro_num_km_tpDados">O número de quilómetros inserido não é válido!</string>
+    <string name="erro_pedido_login">Erro na tentativa de login. Por favor verifique a sua ligação à internet!</string>
 </resources>

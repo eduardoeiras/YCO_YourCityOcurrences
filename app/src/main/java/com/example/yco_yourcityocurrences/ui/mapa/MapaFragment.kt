@@ -94,8 +94,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private var pitch: Float = 0.0f
     private var roll: Float = 0.0f
 
-    private val VALUE_DRIFT = 0.05f
-
     private val callback = OnMapReadyCallback { googleMap ->
         gMap = googleMap
         requestOcorrencias()
@@ -600,6 +598,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         super.onResume()
         startLocationUpdates()
     }
+
     /*MÉTODOS RELATIVOS À OBTENÇÃO DA INFORMAÇÃO DE SENSORES*/
     override fun onSensorChanged(event: SensorEvent?) {
         val sensorType = event?.sensor?.type

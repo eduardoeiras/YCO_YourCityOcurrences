@@ -44,7 +44,6 @@
     <string name="login_form_error">Username and Password are required!</string>
     <string name="user_creds_file_key" translatable="false">userCreds</string>
     <string name="username" translatable="false">username</string>
-    <string name="password" translatable="false">password</string>
     <string name="title_activity_login_realizado" translatable="false">YCO - Your City Ocurrences</string>
     <string name="title_log_out">Log Out</string>
     <string name="warning">Warning</string>
@@ -90,4 +89,6 @@
     <string name="erro_num_km">The number of kilometers can not be empty!</string>
     <string name="erro_num_km_tpDados">The value inserted for the number of kilometers is not valid!</string>
     <string name="value_format" translatable="false">%1$.2f</string>
+    <string name="erro_pedido_login">Error when trying to log in. Please check that your have internet connection!</string>
+    <string name="log_in_done" translatable="false">logInDone</string>
 </resources>
