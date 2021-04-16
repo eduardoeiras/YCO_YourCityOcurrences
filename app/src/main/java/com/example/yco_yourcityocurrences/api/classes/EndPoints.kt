@@ -15,13 +15,6 @@ interface EndPoints {
     @POST("utilizadores/realizarLogin")
     fun realizarLogin(@Field("nomeUser") nomeUser: String?, @Field("pwd") pwd: String?) : Call<Resposta>
 
-    //Endpoints de obtenção de ocorrências
-    @GET("ocorrencias/getOcorrenciaUtilizador/{nomeUtilizador}")
-    fun getOcorrenciasUtilizador(@Path("nomeUtilizador") nomeUser: String?) : Call<RespostaOcorrencias>
-
-    @GET("ocorrencias/getOcorrenciasButUsers/{nomeUtilizador}")
-    fun getOcorrenciasMenosUser(@Path("nomeUtilizador") nomeUser: String?) : Call<RespostaOcorrencias>
-
     @GET("ocorrencias/getAll")
     fun getAllOcorrencias() : Call<List<LinhaOcorrencia>>
 

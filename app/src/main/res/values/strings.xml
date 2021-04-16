@@ -3,7 +3,7 @@
     <string name="title_activity_main" translatable="false">YCO - YourCityOcurrences</string>
     <string name="title_mapa">Occurrences Map</string>
     <string name="title_login">Log In</string>
-    <string name="title_ajuda">Help</string>
+    <string name="title_ajuda">Help:</string>
     <string name="title_notas">Notes</string>
     <string name="iniSessao">Log In</string>
     <string name="hint_iniciarSessao">Username</string>
@@ -91,4 +91,5 @@
     <string name="value_format" translatable="false">%1$.2f</string>
     <string name="erro_pedido_login">Error when trying to log in. Please check that your have internet connection!</string>
     <string name="log_in_done" translatable="false">logInDone</string>
+    <string name="qtd_raio_info">"Showing occurrences in a radius of: "</string>
 </resources>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -34,14 +35,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
+
 
 class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener,
  SensorEventListener {
@@ -69,6 +68,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private lateinit var layoutLabels: ConstraintLayout
     private lateinit var botaoFiltros: ImageButton
 
+    private lateinit var filtrarRaioQtd: TextView
+    private lateinit var layoutFiltragem: ConstraintLayout
     private lateinit var spinnerTipos: Spinner
     private lateinit var tipoSelecionado: String
     private lateinit var numKm: EditText
@@ -117,7 +118,10 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
         /*OBTENÇÃO DAS VIEWS DO LAYOUT E MOSTRAR OU ESCONDER O BOTÃO DE ADIÇÃO DE UMA OCORRÊNCIA*/
         fabAdicionarOcorrencia = root.findViewById(R.id.adicionarOcorrencia)
-        layoutLabels = root.findViewById(R.id.constraint_layout_labels)
+        layoutLabels = root.findViewById(R.id.constraint_layout_ocorrencias)
+
+        filtrarRaioQtd = root.findViewById(R.id.filtrar_raio_qtd)
+        layoutFiltragem = root.findViewById(R.id.constraint_layout_filtragem)
 
         if(nomeUser != "") {
             layoutLabels.visibility = View.VISIBLE
@@ -127,6 +131,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
             layoutLabels.visibility = View.INVISIBLE
             fabAdicionarOcorrencia.visibility = View.INVISIBLE
         }
+
+        layoutFiltragem.visibility = View.INVISIBLE
 
         //FAB PARA ACICIONAR UMA OCORRENCIA, OBTENDO A LOCALIZAÇÃO ATUAL
         fabAdicionarOcorrencia.setOnClickListener { _ ->
@@ -179,8 +185,9 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                             marker.tag = idOcorrencia
                                         }
                                     }
+                                    layoutFiltragem.visibility = View.INVISIBLE
                                 }
-                                if(this@MapaFragment::lastLocation.isInitialized) {
+                                if (this@MapaFragment::lastLocation.isInitialized) {
                                     createUserMarker()
                                 }
                             } else {
@@ -265,9 +272,10 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                             marker.tag = idOcorrencia
                                         }
                                     }
+                                    layoutFiltragem.visibility = View.INVISIBLE
                                     mAlertDialog.dismiss()
                                 }
-                                if(this@MapaFragment::lastLocation.isInitialized) {
+                                if (this@MapaFragment::lastLocation.isInitialized) {
                                     createUserMarker()
                                 }
                             } else {
@@ -277,6 +285,12 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                         Toast.LENGTH_LONG
                                 ).show()
                             }
+                        } else {
+                            Toast.makeText(
+                                    this@MapaFragment.context,
+                                    response.body()?.MSG,
+                                    Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
 
@@ -318,9 +332,12 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                                     marker.tag = idOcorrencia
                                                 }
                                             }
+                                            (getString(R.string.qtd_raio_info) + numeroKm + "km").also { filtrarRaioQtd.text = it }
+                                            layoutFiltragem.visibility = View.VISIBLE
+                                            criarCirculoRaio(raio = numeroKm.toDouble())
                                             mAlertDialog.dismiss()
                                         }
-                                        if(this@MapaFragment::lastLocation.isInitialized) {
+                                        if (this@MapaFragment::lastLocation.isInitialized) {
                                             createUserMarker()
                                         }
                                     } else {
@@ -330,6 +347,12 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                                                 Toast.LENGTH_LONG
                                         ).show()
                                     }
+                                } else {
+                                    Toast.makeText(
+                                            this@MapaFragment.context,
+                                            response.body()?.MSG,
+                                            Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             }
 
@@ -381,13 +404,23 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         return root
     }
 
+    /* CRIAR O CÍRCULO DA FILTRAGEM POR RAIO */
+    private fun criarCirculoRaio(raio: Double) {
+        gMap.addCircle(CircleOptions()
+                .center(LatLng(posicaoUserMarker?.position?.latitude!!, posicaoUserMarker?.position?.longitude!!))
+                .radius(raio * 1000)
+                .strokeColor(Color.BLUE)
+                .fillColor(0x220000FF)
+                .strokeWidth(2f))
+    }
+
     /* CRIAR O MARCADOR DO UTILIZADOR NO MAPA */
     private fun createUserMarker() {
         posicaoUserMarker = gMap.addMarker(MarkerOptions()
-            .position(LatLng(lastLocation.latitude, lastLocation.longitude))
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
-            .anchor(0.5f, 0.5f)
-            .flat(true))
+                .position(LatLng(lastLocation.latitude, lastLocation.longitude))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_arrow))
+                .anchor(0.5f, 0.5f)
+                .flat(true))
         posicaoUserMarker!!.tag = ""
     }
 
@@ -467,70 +500,38 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     /*FUNÇÃO DE OBTENÇÃO DAS OCORRÊNCIAS, LIMPANDO O MAPA*/
     private fun requestOcorrencias() {
         gMap.clear()
+        layoutFiltragem.visibility = View.INVISIBLE
         val request = ServiceBuilder.buildService(EndPoints::class.java)
         if(nomeUser != "") {
-            val call = request.getOcorrenciasUtilizador(nomeUser = nomeUser)
-            call.enqueue(object : Callback<RespostaOcorrencias> {
-                override fun onResponse(call: Call<RespostaOcorrencias>, response: Response<RespostaOcorrencias>) {
+            val call = request.getAllOcorrencias()
+            call.enqueue(object : Callback<List<LinhaOcorrencia>> {
+                override fun onResponse(call: Call<List<LinhaOcorrencia>>, response: Response<List<LinhaOcorrencia>>) {
                     if (response.isSuccessful) {
-                        if (response.body()?.status == true) {
-                            val ocorrencias: List<LinhaOcorrencia>? = response.body()?.data
-                            if (ocorrencias != null) {
-                                for (linha in ocorrencias) {
-                                    val ocorrencia = linha.ocorrencia
-                                    val idOcorrencia = ocorrencia.id_ocorrencia
-                                    val lat = ocorrencia.latitude.toDouble()
-                                    val lng = ocorrencia.longitude.toDouble()
+                        val ocorrencias: List<LinhaOcorrencia>? = response.body()
+                        if (ocorrencias != null) {
+                            for (linha in ocorrencias) {
+                                val ocorrencia = linha.ocorrencia
+                                val idOcorrencia = ocorrencia.id_ocorrencia
+                                val lat = ocorrencia.latitude.toDouble()
+                                val lng = ocorrencia.longitude.toDouble()
+                                if (ocorrencia.nomeUtilizador == nomeUser) {
                                     val obj: List<Int> = listOf(0, idOcorrencia)
                                     val marker = gMap.addMarker(MarkerOptions()
                                             .position(LatLng(lat, lng)))
                                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     marker.tag = obj
-                                }
-                            }
-                        } else {
-                            Toast.makeText(
-                                    this@MapaFragment.context,
-                                    response.body()?.MSG,
-                                    Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
-                    Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
-                }
-            })
-            val callRestantesOcorrencias = request.getOcorrenciasMenosUser(nomeUser = nomeUser)
-            callRestantesOcorrencias.enqueue(object : Callback<RespostaOcorrencias> {
-                override fun onResponse(call: Call<RespostaOcorrencias>, response: Response<RespostaOcorrencias>) {
-                    if (response.isSuccessful) {
-                        if (response.body()?.status == true) {
-                            val ocorrencias: List<LinhaOcorrencia>? = response.body()?.data
-                            if (ocorrencias != null) {
-                                for (linha in ocorrencias) {
-                                    val ocorrencia = linha.ocorrencia
-                                    val idOcorrencia = ocorrencia.id_ocorrencia
-                                    val lat = ocorrencia.latitude.toDouble()
-                                    val lng = ocorrencia.longitude.toDouble()
+                                } else {
                                     val marker = gMap.addMarker(MarkerOptions()
                                             .position(LatLng(lat, lng)))
                                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                                     marker.tag = idOcorrencia
                                 }
                             }
-                        } else {
-                            Toast.makeText(
-                                    this@MapaFragment.context,
-                                    response.body()?.MSG,
-                                    Toast.LENGTH_LONG
-                            ).show()
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
+                override fun onFailure(call: Call<List<LinhaOcorrencia>>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
@@ -629,7 +630,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-
     }
 
     companion object {
