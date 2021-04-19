@@ -19,7 +19,7 @@ object ServiceBuilder {
 
     private val retrofit = Retrofit.Builder()
             //Colocar o ip antes de lançar a app
-        .baseUrl("http://192.168.1.8:80/yco_ws/index.php/api/")
+        .baseUrl("http://10.0.2.2/yco_ws/index.php/api/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

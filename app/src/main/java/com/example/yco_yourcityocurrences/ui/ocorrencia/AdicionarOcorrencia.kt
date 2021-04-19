@@ -21,12 +21,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.yco_yourcityocurrences.R
+import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
-import com.example.yco_yourcityocurrences.api.classes.responses.Ocorrencia
-import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaImg
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.api.classes.responses.*
 import com.example.yco_yourcityocurrences.ui.mapa.MapaFragment
 import com.example.yco_yourcityocurrences.ui.notas.VerEditarNotaActivity
 import com.squareup.picasso.Picasso
@@ -42,18 +40,18 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class AdicionarOcorrencia : AppCompatActivity() {
+class AdicionarOcorrencia : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var titulo: EditText
     private lateinit var imagem: ImageView
     private lateinit var no_img_text: TextView
     private lateinit var descricao: EditText
-    private lateinit var tipo: EditText
+    private var idTipoSelecionado: Int = 0
     private lateinit var morada: TextView
     private lateinit var coords: TextView
 
     private lateinit var titulo_erro: TextView
     private lateinit var descricao_erro: TextView
-    private lateinit var tipo_erro: TextView
+    private lateinit var spinnerTipos: Spinner
 
     private var lat: Double = 0.0
     private var lng: Double = 0.0
@@ -79,14 +77,13 @@ class AdicionarOcorrencia : AppCompatActivity() {
         imagem = findViewById(R.id.add_ocorrencia_img)
         no_img_text = findViewById(R.id.add_ocorrencia_no_img)
         descricao = findViewById(R.id.add_ocorrencia_desc)
-        tipo = findViewById(R.id.add_ocorrencia_tipo)
+        spinnerTipos = findViewById(R.id.add_ocorrencia_tipo)
 
         morada = findViewById(R.id.add_ocorrencia_morada)
         coords = findViewById(R.id.add_ocorrencia_coords)
 
         titulo_erro = findViewById(R.id.add_ocorrencia_titulo_erro)
         descricao_erro = findViewById(R.id.add_ocorrencia_desc_erro)
-        tipo_erro = findViewById(R.id.add_ocorrencia_tipo_erro)
 
         lat = intent.getDoubleExtra("LAT", 0.0)
         lng = intent.getDoubleExtra("LNG", 0.0)
@@ -103,6 +100,33 @@ class AdicionarOcorrencia : AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED, replyIntent)
             finish()
         }
+        getTipos()
+    }
+
+    fun getTipos() {
+        val request = ServiceBuilder.buildService(EndPoints::class.java)
+        val call = request.getAllTiposOcorrencia()
+        call.enqueue(object : Callback<RespostaTipo> {
+            override fun onResponse(call: Call<RespostaTipo>, response: Response<RespostaTipo>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.status == true) {
+                        val adapter = SpinnerTiposAdaptor(this@AdicionarOcorrencia, response.body()!!.data)
+                        spinnerTipos.adapter = adapter
+                        spinnerTipos.onItemSelectedListener = this@AdicionarOcorrencia
+                    } else {
+                        Toast.makeText(
+                                this@AdicionarOcorrencia,
+                                response.body()?.MSG,
+                                Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<RespostaTipo>, t: Throwable) {
+                Toast.makeText(this@AdicionarOcorrencia, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun getAdress(lat: Double, lng: Double): String {
@@ -128,14 +152,6 @@ class AdicionarOcorrencia : AppCompatActivity() {
         }
         else {
             descricao_erro.text = ""
-        }
-
-        if (tipo.text.toString().isEmpty()) {
-            tipo_erro.text = getString(R.string.ocorrencia_tipo_erro)
-            guardar = false
-        }
-        else {
-            tipo_erro.text = ""
         }
 
         return guardar
@@ -269,7 +285,7 @@ class AdicionarOcorrencia : AppCompatActivity() {
         val dataAtual = LocalDateTime.now()
         val dataFormatada = dataAtual.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         val call = request.criarOcorrencia(titulo = titulo.text.toString(), desc = descricao.text.toString(), imagem = urlImgSubmetida,
-        tipo = tipo.text.toString(), dataComunicacao = dataFormatada, latitude = BigDecimal(lat), longitude = BigDecimal(lng), nomeUtilizador = nomeUser)
+        tipo = idTipoSelecionado, dataComunicacao = dataFormatada, latitude = BigDecimal(lat), longitude = BigDecimal(lng), nomeUtilizador = nomeUser)
         call.enqueue(object : Callback<Resposta> {
             override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
                 if (response.isSuccessful) {
@@ -304,5 +320,14 @@ class AdicionarOcorrencia : AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED, replyIntent)
             finish()
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val tipoSelecionado: Tipo = parent?.getItemAtPosition(position) as Tipo
+        idTipoSelecionado = tipoSelecionado.id
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Toast.makeText(this@AdicionarOcorrencia, getString(R.string.obter_tipos_erro), Toast.LENGTH_LONG).show()
     }
 }

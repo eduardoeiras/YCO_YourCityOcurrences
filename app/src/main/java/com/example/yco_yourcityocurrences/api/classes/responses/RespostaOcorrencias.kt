@@ -15,12 +15,13 @@ data class Ocorrencia(
         val id_ocorrencia: Int,
         val titulo: String,
         val descricao: String,
-        val tipo: String,
         val imagem: String,
         val dataComunicacao: String,
         val latitude: String,
         val longitude: String,
-        val nomeUtilizador: String
+        val nomeUtilizador: String,
+        val tipo_id: Int,
+        val tipo: String
 )
 
 data class Utilizador(

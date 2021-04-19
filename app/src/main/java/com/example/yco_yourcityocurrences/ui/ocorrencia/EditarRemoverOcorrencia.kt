@@ -1,7 +1,6 @@
 package com.example.yco_yourcityocurrences.ui.ocorrencia
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -18,12 +17,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.yco_yourcityocurrences.R
+import com.example.yco_yourcityocurrences.adaptors.SpinnerTiposAdaptor
 import com.example.yco_yourcityocurrences.api.classes.EndPoints
 import com.example.yco_yourcityocurrences.api.classes.ServiceBuilder
-import com.example.yco_yourcityocurrences.api.classes.responses.Ocorrencia
-import com.example.yco_yourcityocurrences.api.classes.responses.Resposta
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaImg
-import com.example.yco_yourcityocurrences.api.classes.responses.RespostaOcorrencias
+import com.example.yco_yourcityocurrences.api.classes.responses.*
 import com.squareup.picasso.Picasso
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -34,19 +31,19 @@ import retrofit2.Response
 import java.io.File
 
 
-class EditarRemoverOcorrencia : AppCompatActivity() {
+class EditarRemoverOcorrencia : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var titulo: EditText
     private lateinit var imagem: ImageView
     private lateinit var descricao: EditText
-    private lateinit var tipo: EditText
+    private var idTipoSelecionado: Int = 0
     private lateinit var morada: TextView
     private lateinit var coordenadas: TextView
     private lateinit var nomeUtilizador: TextView
     private lateinit var data: TextView
+    private lateinit var spinnerTipos: Spinner
 
     private lateinit var titulo_erro: TextView
     private lateinit var descricao_erro: TextView
-    private lateinit var tipo_erro: TextView
 
     private lateinit var ocorrenciaOriginal: Ocorrencia
 
@@ -68,7 +65,6 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
         titulo = findViewById(R.id.er_ocorrencia_titulo)
         imagem = findViewById(R.id.img_ocorrencia)
         descricao = findViewById(R.id.er_ocorrencia_desc)
-        tipo = findViewById(R.id.er_ocorrencia_tipo)
         morada = findViewById(R.id.add_ocorrencia_morada)
         coordenadas = findViewById(R.id.add_ocorrencia_coords)
         nomeUtilizador = findViewById(R.id.ocorrencia_username)
@@ -76,7 +72,9 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
 
         titulo_erro = findViewById(R.id.ocorrencia_titulo_erro)
         descricao_erro = findViewById(R.id.ocorrencia_descricao_erro)
-        tipo_erro = findViewById(R.id.ocorrencia_tipo_erro)
+        spinnerTipos = findViewById(R.id.er_ocorrencia_tipo)
+
+        getTipos()
 
         val id = this.intent.getStringExtra("ID_OCORRENCIA")?.toInt()
         val request = ServiceBuilder.buildService(EndPoints::class.java)
@@ -90,7 +88,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                             ocorrenciaOriginal = ocorrencia
                             titulo.setText(ocorrencia.titulo)
                             descricao.setText(ocorrencia.descricao)
-                            tipo.setText(ocorrencia.tipo)
+                            idTipoSelecionado = ocorrencia.tipo_id
+                            spinnerTipos.setSelection(getIndex(spinnerTipos, idTipoSelecionado))
                             Picasso.get().load(ocorrencia.imagem).into(imagem)
                             val latLng = "${ocorrencia.latitude}, ${ocorrencia.longitude}"
                             val adress = getAdress(ocorrencia.latitude.toDouble(), ocorrencia.longitude.toDouble())
@@ -111,6 +110,42 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RespostaOcorrencias>, t: Throwable) {
+                Toast.makeText(this@EditarRemoverOcorrencia, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getIndex(spinner: Spinner, idTipo: Int): Int {
+        for (i in 0 until spinner.count) {
+            val tipo = spinner.getItemAtPosition(i) as Tipo
+            if (tipo.id == idTipo) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    fun getTipos() {
+        val request = ServiceBuilder.buildService(EndPoints::class.java)
+        val call = request.getAllTiposOcorrencia()
+        call.enqueue(object : Callback<RespostaTipo> {
+            override fun onResponse(call: Call<RespostaTipo>, response: Response<RespostaTipo>) {
+                if (response.isSuccessful) {
+                    if (response.body()?.status == true) {
+                        val adapter = SpinnerTiposAdaptor(this@EditarRemoverOcorrencia, response.body()!!.data)
+                        spinnerTipos.adapter = adapter
+                        spinnerTipos.onItemSelectedListener = this@EditarRemoverOcorrencia
+                    } else {
+                        Toast.makeText(
+                                this@EditarRemoverOcorrencia,
+                                response.body()?.MSG,
+                                Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<RespostaTipo>, t: Throwable) {
                 Toast.makeText(this@EditarRemoverOcorrencia, t.message, Toast.LENGTH_SHORT).show()
             }
         })
@@ -145,18 +180,8 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
             guardar = false
         }
 
-        if(tipo.text.toString().isNotEmpty()) {
-            if(tipo.text.toString() != ocorrenciaOriginal.tipo) {
-                tipo_erro.setText("")
-            }
-        }
-        else {
-            tipo_erro.setText(getString(R.string.ocorrencia_tipo_erro))
-            guardar = false
-        }
-
         if(titulo.text.toString() == ocorrenciaOriginal.titulo && descricao.text.toString() == ocorrenciaOriginal.descricao
-                && tipo.text.toString() == ocorrenciaOriginal.tipo && urlImgSubmetida != "") {
+                && urlImgSubmetida != "") {
             guardar = true
         }
 
@@ -167,7 +192,11 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
         var existemAlteracoes: Boolean
 
         existemAlteracoes = !(titulo.text.toString() == ocorrenciaOriginal.titulo && descricao.text.toString() == ocorrenciaOriginal.descricao
-                && tipo.text.toString() == ocorrenciaOriginal.tipo && urlImgSubmetida == "")
+                && urlImgSubmetida == "")
+
+        if(idTipoSelecionado != ocorrenciaOriginal.tipo_id) {
+            existemAlteracoes = true
+        }
 
         return existemAlteracoes
     }
@@ -179,28 +208,28 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                     val request = ServiceBuilder.buildService(EndPoints::class.java)
                     val call: Call<Resposta> = if(urlImgSubmetida != "") {
                         request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
-                            desc = descricao.text.toString(), tipo = tipo.text.toString(), imagem = urlImgSubmetida)
+                                desc = descricao.text.toString(), tipo = idTipoSelecionado, imagem = urlImgSubmetida)
                     } else {
                         request.atualizarOcorrencia(ocorrenciaOriginal.id_ocorrencia, titulo = titulo.text.toString(),
-                            desc = descricao.text.toString(), tipo = tipo.text.toString(), imagem = ocorrenciaOriginal.imagem)
+                                desc = descricao.text.toString(), tipo = idTipoSelecionado, imagem = ocorrenciaOriginal.imagem)
                     }
                     call.enqueue(object : Callback<Resposta> {
                         override fun onResponse(call: Call<Resposta>, response: Response<Resposta>) {
                             if (response.isSuccessful) {
                                 if (response.body()?.status == true) {
                                     Toast.makeText(
-                                        this@EditarRemoverOcorrencia,
-                                        getString(R.string.ocorrencia_atualizada),
-                                        Toast.LENGTH_LONG
+                                            this@EditarRemoverOcorrencia,
+                                            getString(R.string.ocorrencia_atualizada),
+                                            Toast.LENGTH_LONG
                                     ).show()
                                     val replyIntent = Intent()
                                     setResult(RESULT_EDIT, replyIntent)
                                     finish()
                                 } else {
                                     Toast.makeText(
-                                        this@EditarRemoverOcorrencia,
-                                        response.body()?.MSG,
-                                        Toast.LENGTH_LONG
+                                            this@EditarRemoverOcorrencia,
+                                            response.body()?.MSG,
+                                            Toast.LENGTH_LONG
                                     ).show()
                                 }
                             }
@@ -319,13 +348,11 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
                                 if (response.body()?.status == true) {
                                     Picasso.get().load(uri).into(imagem)
                                     urlImgSubmetida = response.body()!!.urlImagem
-                                }
-                                else {
-                                    if(response.body()?.urlImagem != "") {
+                                } else {
+                                    if (response.body()?.urlImagem != "") {
                                         Picasso.get().load(uri).into(imagem)
                                         urlImgSubmetida = response.body()!!.urlImagem
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(
                                                 this@EditarRemoverOcorrencia,
                                                 response.body()?.MSG,
@@ -401,5 +428,14 @@ class EditarRemoverOcorrencia : AppCompatActivity() {
     companion object {
         const val RESULT_REMOVE = 1
         const val RESULT_EDIT = 2
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val tipoSelecionado: Tipo = parent?.getItemAtPosition(position) as Tipo
+        idTipoSelecionado = tipoSelecionado.id
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Toast.makeText(this@EditarRemoverOcorrencia, getString(R.string.obter_tipos_erro), Toast.LENGTH_LONG).show()
     }
 }

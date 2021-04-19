@@ -12,9 +12,11 @@
 
         <EditText
             android:id="@+id/er_ocorrencia_titulo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:gravity="center"
@@ -163,13 +165,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@color/divider_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocorrencia_tipo_erro" />
+            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_tipo_titulo" />
 
         <TextView
             android:id="@+id/titulo_detalhes_loc"
@@ -331,38 +333,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_ocorrencia" />
 
-        <EditText
+        <Spinner
             android:id="@+id/er_ocorrencia_tipo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:hint="@string/er_ocurrence_tipo_hint"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/er_ocorrencia_tipo_titulo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/er_ocorrencia_tipo_titulo"
-            app:layout_constraintTop_toTopOf="@+id/er_ocorrencia_tipo_titulo" />
-
-        <TextView
-            android:id="@+id/ocorrencia_tipo_erro"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:textColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/er_ocorrencia_tipo" />
+            app:layout_constraintTop_toTopOf="@+id/er_ocorrencia_tipo_titulo"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,6 +40,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
+import kotlin.math.roundToInt
 
 
 class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.OnItemSelectedListener,
@@ -65,8 +66,11 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
 
     //VARIÁVEIS REFERENTES A VIEWS PARA ADICIONAR E FILTRAR OCORRENCIAS
     private lateinit var fabAdicionarOcorrencia: View
+
     private lateinit var layoutLabels: ConstraintLayout
+
     private lateinit var botaoFiltros: ImageButton
+    private lateinit var botaoLimparFiltros: Button
 
     private lateinit var filtrarRaioQtd: TextView
     private lateinit var layoutFiltragem: ConstraintLayout
@@ -91,6 +95,7 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
     private var mAccelerometerData = FloatArray(3)
     private var mMagnetometerData = FloatArray(3)
 
+    private lateinit var textOrientacaoUser: TextView
     private var azimuth: Float = 0.0f
     private var pitch: Float = 0.0f
     private var roll: Float = 0.0f
@@ -369,6 +374,13 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                     Toast.makeText(this@MapaFragment.context, getString(R.string.erro_num_km), Toast.LENGTH_SHORT).show()
                 }
             }
+
+            botaoLimparFiltros = dialogView.findViewById(R.id.botao_limpar_filtros)
+            botaoLimparFiltros.setOnClickListener {
+                requestOcorrencias()
+                Toast.makeText(this@MapaFragment.context, getString(R.string.clear_filters_msg), Toast.LENGTH_SHORT).show()
+                mAlertDialog.dismiss()
+            }
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(root.context)
@@ -400,6 +412,8 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensorAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         mSensorMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+        textOrientacaoUser = root.findViewById(R.id.orientacao_user)
 
         return root
     }
@@ -530,7 +544,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<List<LinhaOcorrencia>>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -556,7 +569,6 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<List<LinhaOcorrencia>>, t: Throwable) {
                     Toast.makeText(this@MapaFragment.context, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -625,8 +637,24 @@ class MapaFragment : Fragment(), GoogleMap.OnMarkerClickListener, AdapterView.On
         roll = orientationValues[2]
 
         if (posicaoUserMarker != null) {
-            posicaoUserMarker!!.setRotation(azimuth * 57.2957795f)
+            posicaoUserMarker!!.setRotation(-azimuth * 360 / (2 * 3.14159f))
         }
+        val rotacao = (-azimuth * 360 / (2 * 3.14159f)).roundToInt()
+
+        if(rotacao in 46..134) {
+            textOrientacaoUser.text = getString(R.string.leste)
+        }
+        if(rotacao > -45 && rotacao < 45) {
+            textOrientacaoUser.text = getString(R.string.norte)
+        }
+        if(rotacao < -45 && rotacao > -135) {
+            textOrientacaoUser.text = getString(R.string.oeste)
+        }
+        if(rotacao in -135 downTo -180 || rotacao in 136..179) {
+            textOrientacaoUser.text = getString(R.string.sul)
+        }
+
+
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

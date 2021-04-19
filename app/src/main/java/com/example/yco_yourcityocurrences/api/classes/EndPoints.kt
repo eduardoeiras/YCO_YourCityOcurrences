@@ -37,7 +37,7 @@ interface EndPoints {
     @FormUrlEncoded
     @POST("ocorrencias/atualizarOcorrencia/{id}")
     fun atualizarOcorrencia(@Path("id") id: Int?, @Field("titulo") titulo: String?,
-                            @Field("desc") desc: String?, @Field("tipo") tipo: String?,
+                            @Field("desc") desc: String?, @Field("tipo") tipo: Int?,
                             @Field("imagem") imagem: String?) : Call<Resposta>
 
     //Endpoint para a submissão de uma imagem
@@ -49,7 +49,7 @@ interface EndPoints {
     @FormUrlEncoded
     @POST("ocorrencias/registar")
     fun criarOcorrencia(@Field("titulo") titulo: String?, @Field("desc") desc: String?,
-                        @Field("imagem") imagem: String?, @Field("tipo") tipo: String?, @Field("dataComunicacao") dataComunicacao: String?,
+                        @Field("imagem") imagem: String?, @Field("tipo") tipo: Int?, @Field("dataComunicacao") dataComunicacao: String?,
                         @Field("latitude") latitude: BigDecimal?, @Field("longitude") longitude: BigDecimal?,
                         @Field("nomeUtilizador") nomeUtilizador: String?
     ) : Call<Resposta>

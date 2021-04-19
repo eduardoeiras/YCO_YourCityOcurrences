@@ -38,6 +38,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/er_ocorrencia_tipo_titulo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/ocurrence_type_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_titulo_erro" />
+
         <EditText
             android:id="@+id/add_ocorrencia_title"
             android:layout_width="0dp"
@@ -66,45 +79,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_title" />
 
-        <EditText
+
+        <Spinner
             android:id="@+id/add_ocorrencia_tipo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="@string/er_ocurrence_tipo_hint"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="@+id/er_ocorrencia_tipo_titulo2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_titulo_erro" />
-
-        <TextView
-            android:id="@+id/add_ocorrencia_tipo_erro"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_tipo" />
+            app:layout_constraintStart_toEndOf="@+id/er_ocorrencia_tipo_titulo2"
+            app:layout_constraintTop_toTopOf="@+id/er_ocorrencia_tipo_titulo2" />
 
         <EditText
             android:id="@+id/add_ocorrencia_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/boundary_box"
             android:ems="10"
             android:gravity="start|top"
-            android:background="@drawable/boundary_box"
             android:hint="@string/er_ocurrence_desc_hint"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
@@ -112,7 +109,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_tipo_erro" />
+            app:layout_constraintTop_toBottomOf="@+id/add_ocorrencia_tipo" />
 
         <TextView
             android:id="@+id/add_ocorrencia_desc_erro"

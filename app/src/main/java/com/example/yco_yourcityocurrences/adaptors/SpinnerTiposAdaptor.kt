@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.yco_yourcityocurrences.R
+import com.example.yco_yourcityocurrences.api.classes.responses.Tipo
 
 
-class SpinnerTiposAdaptor(val context: Context, var dataSource: List<String>) : BaseAdapter() {
+class SpinnerTiposAdaptor(val context: Context, var dataSource: List<Tipo>) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -25,7 +26,7 @@ class SpinnerTiposAdaptor(val context: Context, var dataSource: List<String>) : 
             view = convertView
             vh = view.tag as ItemHolder
         }
-        vh.tipo.text = dataSource.get(position)
+        vh.tipo.text = dataSource[position].nome
 
         return view
     }

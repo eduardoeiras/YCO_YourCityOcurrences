@@ -85,4 +85,10 @@
     <string name="erro_num_km_tpDados">O número de quilómetros inserido não é válido!</string>
     <string name="erro_pedido_login">Erro na tentativa de login. Por favor verifique a sua ligação à internet!</string>
     <string name="qtd_raio_info">"A mostrar ocorrências num raio de: "</string>
+    <string name="btn_limpar_filtros">Limpar Filtros</string>
+    <string name="clear_filters_msg">Os filtros foram limpos!</string>
+    <string name="norte">Orientação: Norte (N)</string>
+    <string name="sul">Orientação: Sul (S)</string>
+    <string name="oeste">Orientação: Oeste (O)</string>
+    <string name="leste">Orientação: Leste (L)</string>
 </resources>

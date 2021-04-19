@@ -92,4 +92,10 @@
     <string name="erro_pedido_login">Error when trying to log in. Please check that your have internet connection!</string>
     <string name="log_in_done" translatable="false">logInDone</string>
     <string name="qtd_raio_info">"Showing occurrences in a radius of: "</string>
+    <string name="btn_limpar_filtros">Clean Filters</string>
+    <string name="clear_filters_msg">Filters were cleared!</string>
+    <string name="norte">Orientation: North (N)</string>1
+    <string name="sul">Orientation: South (S)</string>
+    <string name="leste">Orientation: East (E)</string>
+    <string name="oeste">Orientation: Weast (W)</string>
 </resources>
